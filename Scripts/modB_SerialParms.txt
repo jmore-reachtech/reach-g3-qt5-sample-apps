@@ -1,0 +1,7 @@
+modSerialName=Com1
+modSerialBaud=115200
+modSerialParity=N
+modSerialDataBits=8
+modSerialStopBits=1
+modSerialFlowControl=N
+modConnectTypeTCP=false

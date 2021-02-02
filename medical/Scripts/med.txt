@@ -1,0 +1,39 @@
+patientName=Adrian Monk
+patientNumber=ABCDEFGHIJKLMNOP
+patientGender=Unknown
+patientAge=99
+patientCondition=Unstable
+patientConditionColor=red
+patientAdmitDate=Sept 12, 2020
+patientAdmitTime=06:43
+hospitalName=St Vincents
+hospitalRoom=473
+
+bpSysValue=222
+bpDiaValue=199
+
+temperatureCelsius=Fahrenheit
+temperature1=97.2°
+temperature2=97.5°
+temperatureHigh=104.4°
+temperatureArrowRotation=180
+temperatureArrowColor=red
+
+ekgValue=99
+spo2Value=160
+
+salineValue=12
+hiCorValue=17
+glucagonValue=21
+
+insulinValue=0.43
+lastBolusValue=2.5
+iOBValue=3.22
+glucoseValue=177
+
+
+
+
+
+
+

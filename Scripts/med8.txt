@@ -1,0 +1,2 @@
+salineValue=80
+hiCorValue=80
