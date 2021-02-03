@@ -1,0 +1,6 @@
+writeData=40400000
+writeSize=2
+writeRegister=1000
+writeType=4
+doWrite=true
+

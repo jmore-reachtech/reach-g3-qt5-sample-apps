@@ -1,0 +1,4 @@
+tcpAddr=10.0.0.98
+tcpPort=502
+modConnectTypeTCP=true
+
