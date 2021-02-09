@@ -34,6 +34,7 @@ public:
     GpioController& operator=(const GpioController&) = delete;
     GpioController& operator=(GpioController&&) = delete;
 
+    int getPin(int pin);
     bool setPin(int pin, int val);
     QString direction(int pin);
     bool setDirection(int pin, QString dir);
@@ -42,7 +43,6 @@ signals:
 
 public slots:
     bool toggle(int pin);
-    int getPin(int pin);
 
 private:
     int m_fd;
