@@ -14,6 +14,7 @@ RESOURCES += qml.qrc
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+    ../common/gpiopin.cpp \
     main.cpp \
     myGlobal.cpp \
     myStyle.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
     ../common/translator.cpp
 
 HEADERS += \
+    ../common/include/gpiopin.h \
     include/myGlobal.h \
     include/myStyle.h \
     ../common/include/backlight.h \
