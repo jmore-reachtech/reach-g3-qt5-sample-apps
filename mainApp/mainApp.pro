@@ -1,4 +1,4 @@
-QT += core quick gui serialbus serialport qml widgets
+QT += core quick gui serialbus serialport qml widgets network
 LIBS += -lasound
 TARGET = mainApp
 TEMPLATE = app
@@ -7,7 +7,7 @@ CONFIG += c++11
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /data/app/$${TARGET}/bin
+else: unix:!android: target.path = /data/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += qml.qrc

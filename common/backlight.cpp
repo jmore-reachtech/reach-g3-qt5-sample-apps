@@ -34,5 +34,5 @@ int Backlight::brightness()
 void Backlight::setBrightness(int brightness)
 {
     QTextStream out(&m_brightness);
-    out << QString::number(brightness).toLatin1() << endl;
+    out << QString::number(brightness).toLatin1() << Qt::endl;
 }

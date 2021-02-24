@@ -53,6 +53,7 @@ ApplicationWindow {
 
   signal submitTextField(string text)
   signal toggle(int val)
+  signal read(int val)
 
   property int foo: 0
   title: qsTr("Reach Technology Demo")
@@ -100,6 +101,11 @@ ApplicationWindow {
     }
   } //end Toolbar
 
+
+
+  //*****************************************************
+
+/*
   //Read BOX
   Rectangle {
     objectName: "gpioToggleBox"
@@ -136,7 +142,7 @@ ApplicationWindow {
       Text {
         id: elementTextReadButton
         color: MyStyle.statusTextColorLt
-        text: "Toggle GPIO 0"
+        text: "Read GPIO 0"
         font.pixelSize: fontSize20
         anchors {
           verticalCenter: parent.verticalCenter
@@ -158,19 +164,296 @@ ApplicationWindow {
       }
 
       onClicked: {
-        submitTextField("Toggle Button pressed");
-        toggle(val);
-        consoleBox.append("Toggle Button Pressed");
+        submitTextField("Read Button pressed");
+        read(val);
+        consoleBox.append("Read Button Pressed");
       }
     } //end buttonToggle
   } //Toggle BOX
+*/
+
+
+  //*****************************************************
+
+
+  //Read BOX
+  Rectangle {
+    objectName: "gpioToggleBox1"
+    id: gpioToggleBox1
+    width: fontSize240
+    height: fontSize56
+    color: MyStyle.clrConnBox
+    border.color: "white"
+    border.width: 1
+    radius: fontSize18
+    antialiasing: true
+
+    anchors {
+      top: tools.bottom
+      topMargin: fontSize18
+      right: parent.right
+      rightMargin: fontSize18
+    }
+
+    Rectangle {
+      objectName: "buttonToggle1"
+      id: buttonToggle1
+      height: fontSize40
+      width: height + fontSize18
+      color: MyStyle.clrBtnConn
+
+      border.color: "white"
+      border.width: 1
+
+      radius: fontSize18
+      antialiasing: true
+      anchors.fill: parent
+
+      Text {
+        id: elementTextReadButton1
+        color: MyStyle.statusTextColorLt
+        text: "Toggle GPIO 1"
+        font.pixelSize: fontSize20
+        anchors {
+          verticalCenter: parent.verticalCenter
+          horizontalCenter: parent.horizontalCenter;
+        }
+      }
+
+      Accessible.role: Accessible.Button
+      Accessible.onPressAction: {
+        button.clicked()
+      }
+
+      signal clicked
+
+      MouseArea {
+        id: mouseAreaToggle1
+        anchors.fill: buttonToggle1
+        onClicked: buttonToggle1.clicked()
+      }
+
+      onClicked: {
+        submitTextField("Toggle Button1 pressed");
+        toggle(val+1);
+        consoleBox.append("Toggle Button1 Pressed");
+      }
+    } //end buttonToggle1
+  } //Toggle BOX
+
+//*****************************************************
+
+
+  //Read BOX
+  Rectangle {
+    objectName: "gpioToggleBox2"
+    id: gpioToggleBox2
+    width: fontSize240
+    height: fontSize56
+    color: MyStyle.clrConnBox
+    border.color: "white"
+    border.width: 1
+    radius: fontSize18
+    antialiasing: true
+
+    anchors {
+      top: gpioToggleBox1.bottom
+      topMargin: fontSize18
+      right: parent.right
+      rightMargin: fontSize18
+    }
+
+    Rectangle {
+      objectName: "buttonToggle2"
+      id: buttonToggle2
+      height: fontSize40
+      width: height + fontSize18
+      color: MyStyle.clrBtnConn
+
+      border.color: "white"
+      border.width: 1
+
+      radius: fontSize18
+      antialiasing: true
+      anchors.fill: parent
+
+      Text {
+        id: elementTextReadButton2
+        color: MyStyle.statusTextColorLt
+        text: "Toggle GPIO 2"
+        font.pixelSize: fontSize20
+        anchors {
+          verticalCenter: parent.verticalCenter
+          horizontalCenter: parent.horizontalCenter;
+        }
+      }
+
+      Accessible.role: Accessible.Button
+      Accessible.onPressAction: {
+        button.clicked()
+      }
+
+      signal clicked
+
+      MouseArea {
+        id: mouseAreaToggle2
+        anchors.fill: buttonToggle2
+        onClicked: buttonToggle2.clicked()
+      }
+
+      onClicked: {
+        submitTextField("Toggle Button2 pressed");
+        toggle(val+2);
+        consoleBox.append("Toggle Button2 Pressed");
+      }
+    } //end buttonToggle
+  } //Toggle BOX
+
+//*****************************************************
+
+
+  //Read BOX
+  Rectangle {
+    objectName: "gpioToggleBox3"
+    id: gpioToggleBox3
+    width: fontSize240
+    height: fontSize56
+    color: MyStyle.clrConnBox
+    border.color: "white"
+    border.width: 1
+    radius: fontSize18
+    antialiasing: true
+
+    anchors {
+      top: gpioToggleBox2.bottom
+      topMargin: fontSize18
+      right: parent.right
+      rightMargin: fontSize18
+    }
+
+    Rectangle {
+      objectName: "buttonToggle3"
+      id: buttonToggle3
+      height: fontSize40
+      width: height + fontSize18
+      color: MyStyle.clrBtnConn
+
+      border.color: "white"
+      border.width: 1
+
+      radius: fontSize18
+      antialiasing: true
+      anchors.fill: parent
+
+      Text {
+        id: elementTextReadButton3
+        color: MyStyle.statusTextColorLt
+        text: "Toggle GPIO 3"
+        font.pixelSize: fontSize20
+        anchors {
+          verticalCenter: parent.verticalCenter
+          horizontalCenter: parent.horizontalCenter;
+        }
+      }
+
+      Accessible.role: Accessible.Button
+      Accessible.onPressAction: {
+        button.clicked()
+      }
+
+      signal clicked
+
+      MouseArea {
+        id: mouseAreaToggle3
+        anchors.fill: buttonToggle3
+        onClicked: buttonToggle3.clicked()
+      }
+
+      onClicked: {
+        submitTextField("Toggle Button3 pressed");
+        toggle(val+3);
+        consoleBox.append("Toggle Button3 Pressed");
+      }
+    } //end buttonToggle3
+  } //Toggle BOX
+
+//*****************************************************
+
+
+  //Read BOX
+  Rectangle {
+    objectName: "gpioToggleBox4"
+    id: gpioToggleBox4
+    width: fontSize240
+    height: fontSize56
+    color: MyStyle.clrConnBox
+    border.color: "white"
+    border.width: 1
+    radius: fontSize18
+    antialiasing: true
+
+    anchors {
+      top: gpioToggleBox3.bottom
+      topMargin: fontSize18
+      right: parent.right
+      rightMargin: fontSize18
+    }
+
+    Rectangle {
+      objectName: "buttonToggle4"
+      id: buttonToggle4
+      height: fontSize40
+      width: height + fontSize18
+      color: MyStyle.clrBtnConn
+
+      border.color: "white"
+      border.width: 1
+
+      radius: fontSize18
+      antialiasing: true
+      anchors.fill: parent
+
+      Text {
+        id: elementTextReadButton4
+        color: MyStyle.statusTextColorLt
+        text: "Toggle GPIO 4"
+        font.pixelSize: fontSize20
+        anchors {
+          verticalCenter: parent.verticalCenter
+          horizontalCenter: parent.horizontalCenter;
+        }
+      }
+
+      Accessible.role: Accessible.Button
+      Accessible.onPressAction: {
+        button.clicked()
+      }
+
+      signal clicked
+
+      MouseArea {
+        id: mouseAreaToggle4
+        anchors.fill: buttonToggle4
+        onClicked: buttonToggle4.clicked()
+      }
+
+      onClicked: {
+        submitTextField("Toggle Button4 pressed");
+        toggle(val+4);
+        consoleBox.append("Toggle Button4 Pressed");
+      }
+    } //end buttonToggle4
+  } //Toggle BOX
+
+//*****************************************************
+
 
 
   //Clear Console BOX
   Rectangle {
     objectName: "modClearBox"
     id: modClearBox
-    width: gpioToggleBox.width
+    width: gpioToggleBox1.width
     height: fontSize56
     color: MyStyle.clrConnBox
     border.color: "white"
@@ -180,7 +463,7 @@ ApplicationWindow {
 
     anchors {
       bottom: statusBox.bottom
-      left: gpioToggleBox.left
+      left: gpioToggleBox1.left
     }
 
     Rectangle {
@@ -263,7 +546,7 @@ ApplicationWindow {
 
   Connections {
     target: MyGlobal
-    onModConnectTypeTCPChanged: {
+    function onModConnectTypeTCPChanged() {
       connTypeChanged();
       if (MyGlobal.modConnectTypeTCP === false) {
         MyStyle.clrSerial = MyStyle.clrStatus
@@ -277,7 +560,7 @@ ApplicationWindow {
 
   Connections {
     target: MyGlobal
-    onDoToggleChanged: {
+    function onDoToggleChanged() {
        val = 0;
       console.log("Toggle " + val)
       toggle(val)
@@ -286,7 +569,7 @@ ApplicationWindow {
 
   Connections {
     target: MyStyle
-    onThemeDarkChanged: {
+    function onThemeDarkChanged() {
       if (MyStyle.themeDark === true) {
         MyStyle.backColor = MyStyle.backColorDk
         MyStyle.statusBackColor = MyStyle.statusBackColorDk

@@ -1,17 +1,31 @@
 #include <QtDebug>
 #include "serialcontroller.h"
 #include "common.h"
+#include "myGlobal.h"
+
+extern GlobalValues MyGlobal;
 
 SerialController::SerialController(QObject *parent): QObject(parent), m_settings(APP_SETTINGS_PATH, QSettings::NativeFormat), m_translator(nullptr)
 {
     qDebug() << "Serial Controller up";
     m_settings.beginGroup("Serial");
     m_port.setPortName(m_settings.value("serial_port").value<QString> ());
-    m_port.setBaudRate(m_settings.value("QString(ba)QString(ba)serial_baud").value<QSerialPort::BaudRate > (), QSerialPort::AllDirections);
+    MyGlobal.insert("comSerialName", m_settings.value("serial_port").value<QString> ());
+
+    m_port.setBaudRate(m_settings.value("serial_baud").value<QSerialPort::BaudRate > (), QSerialPort::AllDirections);
+    MyGlobal.insert("comSerialBaud", m_settings.value("serial_baud").value<QSerialPort::BaudRate > ());
+
     m_port.setDataBits(m_settings.value("serial_data_bits").value<QSerialPort::DataBits > ());
+    MyGlobal.insert("comSerialParity", m_settings.value("serial_data_bits").value<QSerialPort::DataBits > ());
+
     m_port.setParity(m_settings.value("serial_parity").value<QSerialPort::Parity > ());
+    MyGlobal.insert("comSerialDataBits", m_settings.value("QString(ba)QString(ba)serial_baud").value<QSerialPort::BaudRate > ());
+
     m_port.setStopBits(m_settings.value("serial_stop_bits").value<QSerialPort::StopBits > ());
+    MyGlobal.insert("comSerialStopBits", m_settings.value("serial_stop_bits").value<QSerialPort::StopBits > ());
+
     m_port.setFlowControl(QSerialPort::NoFlowControl);
+
     m_settings.endGroup();
     m_port.setBaudRate(m_port.Baud115200, m_port.AllDirections);
     if (m_port.open(QIODevice::ReadWrite))
@@ -51,7 +65,7 @@ void SerialController::onSerialReadyRead()
     }
 
     int end = rxBytes.lastIndexOf("\n") + 1;
-    QStringList cmds = QString(rxBytes.mid(0, end)).split("\n", QString::SkipEmptyParts);
+    QStringList cmds = QString(rxBytes.mid(0, end)).split("\n", Qt::SkipEmptyParts);
     rxBytes = rxBytes.mid(end);
 
     foreach(QString cmd, cmds)

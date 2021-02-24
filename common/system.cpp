@@ -32,8 +32,9 @@ QString System::version()
 
 QString System::execute(QString cmd)
 {
+    const QStringList args;
     QProcess p(this);
-    p.start(cmd);
+    p.start(cmd, args);
     p.waitForFinished();
     QByteArray data = p.readAllStandardOutput();
     return QString::fromLatin1(data.data());

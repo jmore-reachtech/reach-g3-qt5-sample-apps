@@ -20,6 +20,7 @@ SOURCES += \
     ../common/backlight.cpp \
     ../common/beeper.cpp \
     ../common/gpioController.cpp \
+    ../common/gpiopin.cpp \
     ../common/network.cpp \
     ../common/serialcontroller.cpp \
     ../common/system.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     ../common/include/beeper.h \
     ../common/include/common.h \
     ../common/include/gpioController.h \
+    ../common/include/gpiopin.h \
     ../common/include/i2c-dev.h \
     ../common/include/network.h \
     ../common/include/serialcontroller.h \

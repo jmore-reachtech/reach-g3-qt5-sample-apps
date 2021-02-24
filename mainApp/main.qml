@@ -308,7 +308,7 @@ ApplicationWindow {
 
   Connections {
     target: MyGlobal
-    onModConnectTypeTCPChanged: {
+    function onModConnectTypeTCPChanged() {
       connTypeChanged();
       if (MyGlobal.modConnectTypeTCP === false) {
         MyStyle.clrSerial = MyStyle.clrStatus
@@ -322,7 +322,7 @@ ApplicationWindow {
 
   Connections {
     target: MyStyle
-    onThemeDarkChanged: {
+    function onThemeDarkChanged() {
       if (MyStyle.themeDark === true) {
         MyStyle.backColor = MyStyle.backColorDk
         MyStyle.statusBackColor = MyStyle.statusBackColorDk

@@ -10,6 +10,8 @@
 
 int GpioController::getPin(int pin)
 {
+//    qDebug() << "Getting pin " << pin;
+
     uint32_t reg = 0x0;
 
     if (pin < GPIO_MIN_PIN || pin > GPIO_MAX_PIN)
@@ -18,21 +20,17 @@ int GpioController::getPin(int pin)
         return -1;
     }
 
-    qDebug() << "Getting pin " << pin;
     reg = i2c_smbus_read_byte_data(m_fd, GPIO_CTRL_REG);
 
     if ((reg >> pin) &0x1)
     {
-//        qDebug() << "Getting output reg ";
-        reg = i2c_smbus_read_byte_data(m_fd, GPIO_OUT_REG);
+        reg = i2c_smbus_read_byte_data(m_fd, GPIO_INPUT_REG);
     }
     else
     {
-//        qDebug() << "Getting input reg ";
-        reg = i2c_smbus_read_byte_data(m_fd, GPIO_INPUT_REG);
+        reg = i2c_smbus_read_byte_data(m_fd, GPIO_OUT_REG);
     }
 
-    qDebug() << "reg val: " << QByteArray::number(reg, 16);
     return (reg >> pin) &0x1;
 }
 
@@ -46,8 +44,6 @@ bool GpioController::setPin(int pin, int val)
         return false;
     }
 
-  qDebug() << "Setting pin " << pin << " value to " << val;
-
     reg = i2c_smbus_read_byte_data(m_fd, GPIO_CTRL_REG);
 
     if (((reg >> pin) &0x1))
@@ -58,8 +54,6 @@ bool GpioController::setPin(int pin, int val)
 
     reg = i2c_smbus_read_byte_data(m_fd, GPIO_OUT_REG);
 
-//    qDebug() << "out reg 0x" << QByteArray::number(reg, 16);
-
     if (val == 0)
     {
         reg &= ~(0x01 << pin);
@@ -68,8 +62,6 @@ bool GpioController::setPin(int pin, int val)
     {
         reg |= (0x1 << pin);
     }
-
-//    qDebug() << "new out reg: " << QByteArray::number(reg, 16);
 
     auto rv = i2c_smbus_write_byte_data(m_fd, GPIO_OUT_REG, reg);
     if (rv != 0)
@@ -93,7 +85,7 @@ QString GpioController::direction(int pin)
 
     reg = i2c_smbus_read_byte_data(m_fd, GPIO_CTRL_REG);
 
-    qDebug() << "Getting pin " << pin << " direction " << QByteArray::number(reg, 16);
+//    qDebug() << "Getting pin " << pin << " direction " << QByteArray::number(reg, 16);
 
     if ((reg >> pin) & 0x1)
     {
@@ -159,15 +151,16 @@ bool GpioController::toggle(int pin)
 //    qDebug() << "TOGGLE pin#" << pin;
 
     int val = getPin(pin);
-    qDebug() << "Pin Value " << val;
+    qDebug()<<"Pin Value"<<val;
 
-    if (val == 0 ) {
-        setPin(pin, 1);
+    if (val==0) {
+        setPin(pin,1);
     } else{
-        setPin(pin, 0);
+        setPin(pin,0);
     }
 
-//    qDebug() << "Toggle " << pin << "=" << val;
+    qDebug() << "Toggle " << pin << "=" << val;
+
     return true;
 }
 
@@ -199,7 +192,7 @@ GpioController::GpioController(QObject *parent): QObject(parent), m_fd(0)
         if (rv != 0)
         {
             qDebug() << "i2c dev failed to set output";
-           return;
+            return;
         }
 
         /*clear the out reg */

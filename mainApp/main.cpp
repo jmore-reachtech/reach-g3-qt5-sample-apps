@@ -9,6 +9,7 @@
 #include <QProcess>
 #include <QObject>
 #include <QThread>
+#include <QNetworkInterface>
 
 #include "signal.h"
 #include "common.h"
@@ -74,6 +75,15 @@ int main(int argc, char *argv[])
 
     if (theWindow == nullptr) {
       qDebug() << "Can't instantiate the main window";
+    }
+
+
+    const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
+    for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
+        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost){
+             qDebug() << "IP address =" << address.toString();
+             MyGlobal.insert("tcpAddr", address.toString());
+        }
     }
 
     bool success = QObject::connect(&system, SIGNAL(doBeep(void)), &beeper, SLOT(beep(void)) );

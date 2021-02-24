@@ -11,6 +11,7 @@
 #include "beeper.h"
 #include "common.h"
 #include "gpioController.h"
+#include "gpiopin.h"
 #include "i2c-dev.h"
 #include "network.h"
 #include "serialcontroller.h"
@@ -38,6 +39,25 @@ int main(int argc, char *argv[])
     SerialController serialController;
     System system;
     GpioController gpioController;
+    GpioPin P0;
+
+    gpioController.setDirection(0,"in");
+    gpioController.setDirection(1,"out");
+    gpioController.setDirection(2,"out");
+    gpioController.setDirection(3,"out");
+    gpioController.setDirection(4,"out");
+    gpioController.setDirection(5,"out");
+
+//    gpioController.setPin(0,1);
+    gpioController.setPin(1,1);
+    gpioController.setPin(2,1);
+    gpioController.setPin(3,1);
+    gpioController.setPin(4,1);
+    gpioController.setPin(5,1);
+
+    P0.setNumber(0);
+    P0.setPoll(1);
+
 
     qmlRegisterType < Network > ("net.reachtech", 1, 0, "Network");
     qmlRegisterType < Beeper > ("sound.reachtech", 1, 0, "Beeper");
@@ -70,6 +90,9 @@ int main(int argc, char *argv[])
     Q_ASSERT(success);
 
     success = QObject::connect(theWindow, SIGNAL(toggle(int) ), &gpioController, SLOT(toggle(int)));
+    Q_ASSERT(success);
+
+    success = QObject::connect(theWindow, SIGNAL(read(int) ), &gpioController, SLOT(getPin(int)));
     Q_ASSERT(success);
 
     qDebug() << "App EXEC ";

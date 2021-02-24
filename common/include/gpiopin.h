@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QTimer>
 
-#include "gpiocontroller.h"
+#include "gpioController.h"
 
 class GpioPin : public QObject
 {
@@ -23,8 +23,7 @@ public:
     int number(void);
     void setNumber(int);
     bool poll(void);
-    void setPoll(bool);
-
+    void setPoll(int);
 
 signals:
     void pinDirectionChanged(const QString&);
@@ -39,7 +38,7 @@ private slots:
     void onPinPoll(void);
 
 private:
-    int             m_num;
+    int  m_num;
     QString         m_dir;
     int             m_val;
     QTimer          m_poll;
