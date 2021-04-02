@@ -25,7 +25,11 @@
 
 StyleValues  MyStyle;
 GlobalValues MyGlobal;
-
+System mySystem;
+Beeper beeper;
+SerialController serialController;
+Network network;
+Backlight backlight;
 
 int main(int argc, char *argv[])
 {
@@ -38,7 +42,6 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("MyStyle", & MyStyle);
     qDebug() << "The style count is => " << MyStyle.count();
 
-    SerialController serialController;
     /* Need to register before the MainviewController is instantiated */
     qmlRegisterType < Network > ("net.reachtech", 1, 0, "Network");
     qmlRegisterType < Beeper > ("sound.reachtech", 1, 0, "Beeper");
@@ -51,7 +54,8 @@ int main(int argc, char *argv[])
     MyGlobal.insert("screenWidth", screenGeometry.width());
     MyGlobal.insert("screenHeight", screenGeometry.height());
     MyGlobal.insert("screenFactor", screenGeometry.height());
-    //qDebug() << "Screen Size is"  << MyGlobal.value("screenWidth").toInt() << "x" <<  MyGlobal.value("screenHeight").toInt();
+
+    beeper.setVolume(90);
 
     engine.load("qrc:/MainScreen.qml");
     if (engine.rootObjects().isEmpty())
