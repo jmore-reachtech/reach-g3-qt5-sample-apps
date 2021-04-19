@@ -10,6 +10,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QScreen>
+#include <QThread>
 
 #include "signal.h"
 #include "common.h"
@@ -25,7 +26,10 @@
 
 StyleValues  MyStyle;
 GlobalValues MyGlobal;
-
+System mySystem;
+Beeper beeper;
+Network network;
+Backlight backlight;
 
 int main(int argc, char *argv[])
 {
@@ -38,7 +42,6 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("MyStyle", & MyStyle);
     qDebug() << "The style count is => " << MyStyle.count();
 
-    SerialController serialController;
     /* Need to register before the MainviewController is instantiated */
     qmlRegisterType < Network > ("net.reachtech", 1, 0, "Network");
     qmlRegisterType < Beeper > ("sound.reachtech", 1, 0, "Beeper");
@@ -51,7 +54,14 @@ int main(int argc, char *argv[])
     MyGlobal.insert("screenWidth", screenGeometry.width());
     MyGlobal.insert("screenHeight", screenGeometry.height());
     MyGlobal.insert("screenFactor", screenGeometry.height());
-    //qDebug() << "Screen Size is"  << MyGlobal.value("screenWidth").toInt() << "x" <<  MyGlobal.value("screenHeight").toInt();
+
+    //Move the beeper to its own thread so it runs all by itself in background.
+    // No waiting for completion of the beep...
+    QThread *thread = new QThread();
+    beeper.moveToThread(thread);
+    thread->start();
+
+    SerialController serialController;
 
     engine.load("qrc:/MainScreen.qml");
     if (engine.rootObjects().isEmpty())
@@ -64,6 +74,14 @@ int main(int argc, char *argv[])
     }
 
     QObject::connect(window, SIGNAL(submitTextField(QString)), & serialController, SLOT(send(QString)));
+
+
+    qDebug() << "[Main] start Beep";
+    beeper.setVolume(90);
+    beeper.setSoundFile("/data/app/sounds/beep.wav");
+    beeper.beep();  //play the sound
+    qDebug() << "[Main] end Beep";
+
     return app.exec();
 }
 

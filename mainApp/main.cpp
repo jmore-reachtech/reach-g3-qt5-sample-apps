@@ -1,3 +1,23 @@
+// Copyright 2020 Reach Technology
+
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QSettings>
@@ -26,6 +46,10 @@
 
 StyleValues MyStyle;
 GlobalValues MyGlobal;
+SerialController serialController;
+Network network;
+System mySystem;
+Beeper beeper;
 
 int main(int argc, char *argv[])
 {
@@ -35,9 +59,6 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("MyStyle", & MyStyle);
     engine.rootContext()->setContextProperty("MyGlobal", & MyGlobal);
 
-    SerialController serialController;
-    Beeper beeper;
-    System system;
 
     /* Need to register before the MainviewController is instantiated */
     qmlRegisterType < Network > ("net.reachtech", 1, 0, "Network");
@@ -53,13 +74,10 @@ int main(int argc, char *argv[])
     MyGlobal.insert("screenHeight", screenGeometry.height());
     MyGlobal.insert("screenFactor", screenGeometry.height());
 
-    QString rtn = system.doCommand("free -k");
+    QString rtn = mySystem.doCommand("free -k");
     MyGlobal.insert("free", rtn);
 
-    //amixer sset PCM 100%
-    system.doCommand("amixer sset PCM 100%");  //set ther PCM output level
-
-    //Move the beeper to its own thrtead so it runs all by itself in background.
+    //Move the beeper to its own thread so it runs all by itself in background.
     // No waiting for completion of the beep...
     QThread *thread = new QThread();
     beeper.moveToThread(thread);
@@ -77,29 +95,23 @@ int main(int argc, char *argv[])
       qDebug() << "Can't instantiate the main window";
     }
 
-
+    qDebug() << "Main Init";
     const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
     for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
         if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost){
-             qDebug() << "IP address =" << address.toString();
+             qDebug() << "System reports IP address =" << address.toString();
              MyGlobal.insert("tcpAddr", address.toString());
         }
     }
 
-    bool success = QObject::connect(&system, SIGNAL(doBeep(void)), &beeper, SLOT(beep(void)) );
-    Q_ASSERT(success);
-
-    success = QObject::connect(&system, SIGNAL(setSoundFile(QString)), &beeper, SLOT(setSoundFile(QString)) );
-    Q_ASSERT(success);
-
+    bool success;
     success = QObject::connect(theWindow, SIGNAL(submitTextField(QString)), &serialController, SLOT(send(QString)));
     Q_ASSERT(success);
 
-    success = QObject::connect(theWindow, SIGNAL(doCmd(QString)), &system, SLOT(doCommand(QString)) );
-    Q_ASSERT(success);
-
     qDebug() << "[Main] start Beep";
-    system.doTheBeep("/data/app/sounds/lab.wav");
+    beeper.setVolume(90);
+    beeper.setSoundFile("/data/app/sounds/beep.wav");
+    beeper.beep();  //play the sound
     qDebug() << "[Main] end Beep";
 
     return app.exec();

@@ -1,4 +1,5 @@
 QT += qml serialport gui quick
+
 CONFIG += c++11
 LIBS += -lasound
 TARGET = medical
@@ -39,7 +40,7 @@ SOURCES += \
     ../common/network.cpp \
     ../common/serialcontroller.cpp \
     ../common/system.cpp \
-    ../common/translator.cpp \
+    ../common/translator.cpp
 
 HEADERS += \
     include/myGlobal.h \
@@ -53,4 +54,5 @@ HEADERS += \
     ../common/include/serialcontroller.h \
     ../common/include/sound.h \
     ../common/include/system.h \
-    ../common/include/translator.h \
+    ../common/include/translator.h
+

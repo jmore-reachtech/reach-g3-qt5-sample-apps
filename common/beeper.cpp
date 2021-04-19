@@ -1,7 +1,31 @@
+// Copyright 2020 Reach Technology
+
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+
 #include <QDebug>
+#include <QString>
 
 #include "sound.h"
 #include "beeper.h"
+#include "system.h"
+
+extern System mySystem;
 
 Beeper::Beeper(QObject *parent): QObject(parent), m_playbackHandle(nullptr), m_wavePtr(nullptr)
 {
@@ -30,7 +54,7 @@ Beeper::~Beeper()
 
 QString Beeper::soundFile()
 {
-    return "";
+    return currentSoundFile;
 }
 
 void Beeper::setSoundFile(const QString &path)
@@ -38,9 +62,8 @@ void Beeper::setSoundFile(const QString &path)
     FILE *file = nullptr;
     struct wav_header header;
     int ret;
-
-    qDebug() << "Opening sound file: " << path;
-
+    currentSoundFile = path;
+//    qDebug() << "Opening sound file: " << path;
     memset(&header, 0, sizeof(struct wav_header));
 
     file = fopen(path.toUtf8().data(), "r");
@@ -95,7 +118,6 @@ void Beeper::setSoundFile(const QString &path)
     }
 
     fclose(file);
-
     emit soundFileChanged();
 }
 
@@ -105,7 +127,6 @@ void Beeper::beep()
     int ret = 0;
 
     qDebug("Beep - starting the sound file");
-
     if (m_wavePtr == nullptr)
     {
         return;
@@ -128,5 +149,15 @@ void Beeper::beep()
     }
 
     qDebug("Beep - end");
+}
+
+void Beeper::setVolume(int vol)
+{
+    qDebug() << "Beep - Set Volume to " << vol;
+    QString setCmd = "amixer sset PCM " + QString::number(vol) + "%";
+    qDebug() << "Beep" << setCmd;
+    mySystem.doCommand(setCmd);
 
 }
+
+

@@ -25,11 +25,20 @@ Window {
     visible: true
     width: MyGlobal.screenWidth
     height: MyGlobal.screenHeight
+    property int theValue: MyGlobal.screenFactor
+
+    //width: 800 //MyGlobal.screenWidth
+    //height: 480 //MyGlobal.screenHeight
+    //property int theValue: 480 //MyGlobal.screenFactor
+
     color: MyStyle.backgroundColor
     title: qsTr("Reach Technologies -- Medical Demo")
 
-    property int theValue: MyGlobal.screenFactor
 
+    property int fontSize240: theValue / 2
+    property int fontSize160: theValue / 3
+    property int fontSize120: theValue / 4
+    property int fontSize96: theValue / 5
     property int fontSize80: theValue / 6
     property int fontSize60: theValue / 8
     property int fontSize50: theValue / 10
@@ -233,19 +242,20 @@ Window {
 
         color: MyStyle.backgroundColor
 
-
         //----- Patient Info
         Rectangle {
             id: topRow
             height: MyGlobal.screenHeight / 6
             width: MyGlobal.screenWidth
 
+
             Rectangle {
                 id: patientBox
                 anchors.left: parent.left
-                width: MyGlobal.screenWidth / 3 //- fontSize40
+                width: MyGlobal.screenWidth / 3
                 height: parent.height
                 color: MyStyle.backgroundColor
+
 
                 Text {
                     anchors {
@@ -287,7 +297,7 @@ Window {
 
                     color: MyStyle.propertyTitleColor
                     text: qsTr("Age:")
-                    font.pixelSize: fontSize13
+                    font.pixelSize: fontSize14
                 }
 
                 Text {
@@ -328,7 +338,7 @@ Window {
                     }
                     color: MyStyle.propertyTitleColor
                     text: "Condition:"
-                    font.pixelSize: fontSize13
+                    font.pixelSize: fontSize14
                 }
 
                 Text {
@@ -385,7 +395,7 @@ Window {
                     }
                     color: MyStyle.propertyTitleColor
                     text: qsTr("Admission:")
-                    font.pixelSize: fontSize13
+                    font.pixelSize: fontSize14
                 }
 
                 Text {
@@ -435,7 +445,7 @@ Window {
 
                 anchors.left: admitBox.right
                 anchors.bottom: patientBox.bottom
-                width: MyGlobal.screenWidth / 3 - 100
+                width: MyGlobal.screenWidth / 3 - fontSize96
                 height: parent.height
 
                 Text {
@@ -507,7 +517,7 @@ Window {
                 Label {
                     id: currentDateLabel
                     property date currentDate: new Date()
-                    font.pixelSize: fontSize13
+                    font.pixelSize: fontSize14
                     anchors {
                         bottom: parent.bottom;
                         left: parent.left;
@@ -550,7 +560,7 @@ Window {
                 }
                 color: MyStyle.titleColor
                 text: qsTr("Temperature")
-                font.pixelSize: fontSize13
+                font.pixelSize: fontSize14
             }
 
             Text {
@@ -562,7 +572,7 @@ Window {
                 }
                 color: MyStyle.propertyValueColor
                 text: MyGlobal.temperatureCelsius
-                font.pixelSize: fontSize11
+                font.pixelSize: fontSize14
             }
 
             Text {
@@ -624,7 +634,7 @@ Window {
                 }
                 color: MyStyle.propertyTitleColor
                 text: qsTr("Highest")
-                font.pixelSize: fontSize12
+                font.pixelSize: fontSize14
                 font.family: sourceSansLight.name
             }
 
@@ -648,7 +658,7 @@ Window {
             id: bpBox
 
             height: MyGlobal.screenHeight / 4
-            width: MyGlobal.screenWidth / 2 - fontSize40
+            width: MyGlobal.screenWidth / 3 + fontSize30
 
             anchors {
                 left: parent.left
@@ -663,6 +673,7 @@ Window {
                     left: parent.left
                     leftMargin: mainLeftMargin
                     top: parent.top
+                    topMargin: fontSize14
                 }
                 color: MyStyle.titleColor
                 text: qsTr("Blood Pressure")
@@ -678,7 +689,7 @@ Window {
                 }
                 color: MyStyle.propertyTitleColor
                 text: qsTr("mmHg")
-                font.pixelSize: fontSize12
+                font.pixelSize: fontSize14
             }
 
             Text {
@@ -689,7 +700,7 @@ Window {
                 }
                 color: MyStyle.propertyTitleColor
                 text: qsTr("SYS")
-                font.pixelSize: fontSize10
+                font.pixelSize: fontSize14
             }
 
             Text {
@@ -700,7 +711,7 @@ Window {
                 }
                 color: MyStyle.propertyTitleColor
                 text: qsTr("DIA")
-                font.pixelSize: fontSize10
+                font.pixelSize: fontSize14
             }
 
             Text {
@@ -721,11 +732,12 @@ Window {
                 anchors {
                     left: bpSys.right
                     leftMargin: fontSize14
-                    bottom: parent.bottom
-                    bottomMargin: fontSize14
+                    top: parent.top
+                    topMargin: fontSize60
                 }
                 fillMode: Image.PreserveAspectFit
                 source: "Images/back-slash-large.png"
+                height: fontSize50
             }
 
             Text {
@@ -752,6 +764,7 @@ Window {
 
             anchors {
                 left: tempBox.right
+                leftMargin: fontSize12
                 top: topRow.bottom
                 topMargin: fontSize18
             }
@@ -1146,6 +1159,7 @@ Window {
                 topMargin: fontSize14
             }
 
+
             Rectangle {
                 id: greenCircle
                 anchors {
@@ -1187,7 +1201,7 @@ Window {
                 id: textBMP
                 color: MyStyle.propertyTitleColorDark
                 text: qsTr("BMP")
-                font.pixelSize: fontSize11
+                font.pixelSize: fontSize12
                 anchors {
                     horizontalCenter: greenCircle.horizontalCenter;
                     bottom: greenCircle.bottom;
@@ -1202,6 +1216,8 @@ Window {
                     left: greenCircle.right
                     verticalCenter: ekgBox.verticalCenter
                 }
+                height: fontSize35
+                width: fontSize160
                 source: "Images/ekg-line.gif"
                 opacity: 0
             }
@@ -1299,7 +1315,7 @@ Window {
                 textFormat: Text.RichText
                 text: "SpO<sub>2</sub>"
                 color: MyStyle.propertyTitleColorDark
-                font.pixelSize: fontSize11
+                font.pixelSize: fontSize12
                 anchors {
                     horizontalCenter: blueCircle.horizontalCenter;
                     bottom: blueCircle.bottom;
@@ -1314,6 +1330,8 @@ Window {
                     left: blueCircle.right
                     verticalCenter: spoxBox.verticalCenter
                 }
+                height: fontSize35
+                width: fontSize160
                 source: "Images/pulse-line.gif"
                 opacity: 0
             }
@@ -1589,7 +1607,7 @@ Window {
                     }
                     color: MyStyle.propertyTitleColor
                     text: qsTr("U")
-                    font.pixelSize: fontSize12
+                    font.pixelSize: fontSize13
                 }
             }
 
@@ -1657,6 +1675,7 @@ Window {
             }
             color: MyStyle.backgroundColor
 
+
             //----- Alarm
             Rectangle {
                 id: buttonAlarmOn
@@ -1675,7 +1694,7 @@ Window {
                     id: elementTextAlarmButton
                     color: MyStyle.alarmFontColor
                     text: qsTr("Alarm")
-                    font.pixelSize: fontSize10
+                    font.pixelSize: fontSize14
                     anchors {
                         bottom: parent.bottom;
                         horizontalCenter: parent.horizontalCenter;
@@ -1752,7 +1771,7 @@ Window {
                     id: elementTextVitalsOnButton
                     color: MyStyle.vitalsFontColor
                     text: qsTr("Vitals")
-                    font.pixelSize: fontSize10
+                    font.pixelSize: fontSize14
                     anchors {
                         bottom: parent.bottom;
                         bottomMargin: fontSize5
@@ -1830,7 +1849,7 @@ Window {
                     id: elementTextHelpOnButton
                     color: MyStyle.helpFontColor
                     text: qsTr("Help")
-                    font.pixelSize: fontSize10
+                    font.pixelSize: fontSize14
                     anchors {
                         bottom: parent.bottom;
                         horizontalCenter: parent.horizontalCenter;
@@ -1907,12 +1926,13 @@ Window {
 
             //--- Reach Logo
             Rectangle {
-                height: fontSize12
+                height: fontSize18
                 width: rightBox.width - 3
                 anchors {
                     bottom: rightBox.bottom;
                     horizontalCenter: rightBox.horizontalCenter
                 }
+
                 color: MyStyle.backgroundColor
                 Image {
                     id: imageLogoReach

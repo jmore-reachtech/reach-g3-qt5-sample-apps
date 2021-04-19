@@ -39,8 +39,6 @@ GlobalValues::GlobalValues(QObject * parent): QQmlPropertyMap(this, parent) {
    insert("iOBValue", "2.5");
    insert("glucoseValue", "125");
 
-   qDebug() << "GLOBALS CONSTRUCTOR "  << value("screenWidth") ;
-
 }
 
 void GlobalValues::startEngine() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2021-02-24T14:47:17. -->
+<!-- Written by QtCreator 4.11.0, 2021-04-19T15:42:00. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -315,14 +315,18 @@
      <value type="int">14</value>
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">1</value>
-    <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
+    <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes">
+     <value type="QString">QT_QPA_EGLFS_NO_LIBINPUT=1</value>
+     <value type="QString">QT_QPA_EGLFS_TSLIB=1</value>
+     <value type="QString">QT_QPA_FB_DISABLE_INPUT=1</value>
+    </valuelist>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">mainApp (on G3BNG)</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinuxRunConfiguration:/data/app/mainApp/mainApp.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/data/app/mainApp/mainApp.pro</value>
     <value type="int" key="RemoteLinux.EnvironmentAspect.Version">1</value>
     <value type="QString" key="RemoteLinux.RunConfig.AlternateRemoteExecutable"></value>
     <value type="bool" key="RemoteLinux.RunConfig.UseAlternateRemoteExecutable">false</value>
-    <value type="QString" key="RunConfiguration.Arguments">-platform eglfs -plugin tslib</value>
+    <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
