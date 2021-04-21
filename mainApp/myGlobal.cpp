@@ -35,7 +35,7 @@ GlobalValues::GlobalValues(QObject * parent): QQmlPropertyMap(this, parent) {
     insert("comSerialStopBits", 1);
     insert("comSerialFlowControl", "N");
 
-    insert("rs485SerialName", "/dev/ttymxc3");
+    insert("rs485SerialName", "");
     insert("rs485SerialBaud", 115200);
     insert("rs485SerialParity", "N");
     insert("rs485SerialDataBits", 8);

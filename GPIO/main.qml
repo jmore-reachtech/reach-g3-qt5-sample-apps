@@ -120,78 +120,6 @@ ApplicationWindow {
     }
   } //end Toolbar
 
-
-
-  //*****************************************************
-
-/*
-  //Read BOX
-  Rectangle {
-    objectName: "gpioToggleBox"
-    id: gpioToggleBox
-    width: fontSize240
-    height: fontSize56
-    color: MyStyle.clrConnBox
-    border.color: "white"
-    border.width: 1
-    radius: fontSize18
-    antialiasing: true
-
-    anchors {
-      top: tools.bottom
-      topMargin: fontSize18
-      right: parent.right
-      rightMargin: fontSize18
-    }
-
-    Rectangle {
-      objectName: "buttonToggle"
-      id: buttonToggle
-      height: fontSize40
-      width: height + fontSize18
-      color: MyStyle.clrBtnConn
-
-      border.color: "white"
-      border.width: 1
-
-      radius: fontSize18
-      antialiasing: true
-      anchors.fill: parent
-
-      Text {
-        id: elementTextReadButton
-        color: MyStyle.statusTextColorLt
-        text: "Read GPIO 0"
-        font.pixelSize: fontSize20
-        anchors {
-          verticalCenter: parent.verticalCenter
-          horizontalCenter: parent.horizontalCenter;
-        }
-      }
-
-      Accessible.role: Accessible.Button
-      Accessible.onPressAction: {
-        button.clicked()
-      }
-
-      signal clicked
-
-      MouseArea {
-        id: mouseAreaToggle
-        anchors.fill: buttonToggle
-        onClicked: buttonToggle.clicked()
-      }
-
-      onClicked: {
-        submitTextField("Read Button pressed");
-        read(val);
-        consoleBox.append("Read Button Pressed");
-      }
-    } //end buttonToggle
-  } //Toggle BOX
-*/
-
-
   //*****************************************************
 
 
@@ -481,8 +409,10 @@ ApplicationWindow {
     antialiasing: true
 
     anchors {
-      bottom: statusBox.bottom
-      left: gpioToggleBox1.left
+      top: gpioToggleBox4.bottom
+      topMargin: fontSize18
+      right: parent.right
+      rightMargin: fontSize18
     }
 
     Rectangle {
@@ -556,10 +486,11 @@ ApplicationWindow {
     TextEdit {
       objectName: "consoleBox"
       id: consoleBox
-      width: 240
+      width: fontSize240
       text: "GPIO Test"
-      leftPadding: 15
-      topPadding: 15
+      font.pixelSize: fontSize14
+      leftPadding: fontSize15
+      topPadding: fontSize15
     }
   }
 
