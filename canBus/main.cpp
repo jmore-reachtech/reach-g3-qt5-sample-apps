@@ -30,6 +30,7 @@ System mySystem;
 Beeper beeper;
 Network network;
 Backlight backlight;
+int scale;
 
 int main(int argc, char *argv[])
 {
@@ -52,8 +53,13 @@ int main(int argc, char *argv[])
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect  screenGeometry = screen->geometry();
     MyGlobal.insert("screenWidth", screenGeometry.width());
-    MyGlobal.insert("screenHeight", screenGeometry.height());
-    MyGlobal.insert("screenFactor", screenGeometry.height());
+
+    scale = screenGeometry.height();
+
+    qDebug() << "Scale =" << scale;
+
+    MyGlobal.insert("screenHeight", scale);
+    MyGlobal.insert("screenFactor", scale);
 
     SerialController serialController;
     CanBus canBus;

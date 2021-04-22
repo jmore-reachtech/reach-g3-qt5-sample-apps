@@ -207,7 +207,12 @@ ApplicationWindow {
 
       P_Home {
           id: firstpage
-          objectName: "Home"
+//          objectName: "Home"
+          anchors {
+              //top.parent.top
+              horizontalCenter: parent.horizontalCenter
+              horizontalCenterOffset: -20
+          }
       }
   }
 

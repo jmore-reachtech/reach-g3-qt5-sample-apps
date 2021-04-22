@@ -50,7 +50,7 @@ GlobalValues::GlobalValues(QObject * parent): QQmlPropertyMap(this, parent) {
   insert("airDial_currentValue", 0);
   insert("airDial_measuredMaxValue", -1);
   insert("airDial_maxText", "");
-  insert("airDial_measuredAvgValue", 0);
+//  insert("airDial_measuredAvgValue", 0);
   insert("airDial_avgText", "");
   insert("airDial_minimumRangeValue", 0);
   insert("airDial_maximumRangeValue", 100);

@@ -1,14 +1,15 @@
 #include "myStyle.h"
+#include "myGlobal.h"
 #include <QDebug>
+
+extern GlobalValues MyGlobal;
+extern int scale;
 
 StyleValues::StyleValues(QObject * parent): QQmlPropertyMap(this, parent) {
   setObjectName("style");
-  insert("panelWidth", QVariant::fromValue(800));
-  insert("panelHeight", QVariant::fromValue(480));
-  insert("statusBarHeight", QVariant::fromValue(40));
-
-  insert("columnSpacing", QVariant::fromValue(102));
-  insert("rowSpacing", QVariant::fromValue(40));
+  insert("statusBarHeight", QVariant::fromValue(scale/20));
+  insert("columnSpacing", QVariant::fromValue(scale/8)); //102
+  insert("rowSpacing", QVariant::fromValue(scale/20 ));// 40));
 
   insert("themeDark", true);
   insert("backColor", QVariant::fromValue(QString("black")));
@@ -66,16 +67,16 @@ StyleValues::StyleValues(QObject * parent): QQmlPropertyMap(this, parent) {
   insert("drawerFontSize", QVariant::fromValue(22));
   insert("drawerLeftMargin", QVariant::fromValue(15));
 
-  insert("dialWidth", QVariant::fromValue(225));
-  insert("dialHeight", QVariant::fromValue(300));
-  insert("dialBarWidth", QVariant::fromValue(15));
+  insert("dialWidth", (scale>300) ? 225 : 100);  //QVariant::fromValue(225));
+  insert("dialHeight", (scale>300) ? 300 : 150); // 150); //scale/2); //QVariant::fromValue(300));
+  insert("dialBarWidth", (scale>300) ? 15 : 9); //10); //scale/24)); //15
   insert("dialTicksOn", QVariant::fromValue(true));
 
-  insert("componentX", QVariant::fromValue(130));
-  insert("componentY", QVariant::fromValue(160));
-  insert("iconSize", QVariant::fromValue(100));
+  insert("componentX", (scale>300) ? 133 : 60); //100); // (scale>300) ? 133 : 100); //QVariant::fromValue(scale/6)); //133
+  insert("componentY", (scale>300) ? 160 : 70); //60); //QVariant::fromValue(scale/5)); //160));
+  insert("iconSize", (scale>300) ? 100 : 50); //50); //QVariant::fromValue(scale/2)); //100));
 
-  insert("textY", QVariant::fromValue(90));
+  insert("textY", (scale>300) ? 90 : 45); //QVariant::fromValue(scale/2)); //90));
   insert("imgX", QVariant::fromValue(QString("Images/X_100.png")));
 
   insert("metricBool", QVariant::fromValue(false));

@@ -149,7 +149,6 @@ Rectangle {
       if (currentValue > maximumRangeValue) {
         currentValue = maximumRangeValue;
       }
-      console.log("Current Val =", currentValue);
 
       if (currentValue >= minimumRangeValue && currentValue <= maximumRangeValue) {
         barColor = MyStyle.clrNormal; //oN/Normal
