@@ -33,6 +33,7 @@ ApplicationWindow {
   height: MyGlobal.screenHeight
   property int theValue: MyGlobal.screenFactor
   property int val: 0;
+  property int oldVal: 0
 
   //used to scale across different screen resolutions
   property int fontSize240: theValue / 2
@@ -71,7 +72,6 @@ ApplicationWindow {
   //**** Do not change directly
   property int engineStatus: 0
   property string engineStatusColor: MyStyle.clrWarning
-
   property int speedStatus: 0
   property string speedStatusColor: MyStyle.clrWarning
 
@@ -155,41 +155,55 @@ ApplicationWindow {
   property string aggregatedStatusColor: MyStyle.clrNormal
 
 
+  // This function collects all the status and reports the highest level.
+  // Can be used across pages as well as variables
   function getAggStatus() {
-    window.aggregatedStatus = 1
-    var ret = window.engineStatus
-    window.aggregatedStatusColor = MyStyle.clrNormal
-    if (window.speedStatus > window.engineStatus) ret = window.speedStatus
-    window.aggregatedStatus = ret
+    var reportStr = "System Off";
+    window.aggregatedStatus = 1;
+    var ret = window.engineStatus;
+    window.aggregatedStatusColor = MyStyle.clrNormal;
+    if (window.speedStatus > window.engineStatus) ret = window.speedStatus;
+    window.aggregatedStatus = ret;
 
     //ret has the highest value
-    var str = MyStyle.strOff
+    var str = MyStyle.strOff;
     if (window.aggregatedStatus === 0) {
-      str = MyStyle.strOff
+      str = MyStyle.strOff;
       window.aggregatedStatusColor = MyStyle.clrOff
-      imgState.source = MyStyle.imgOff
+      imgState.source = MyStyle.imgOff;
     } else if (aggregatedStatus === 1) {
-      str = MyStyle.strNormal
+    reportStr = "System Normal";
+        str = MyStyle.strNormal;
       window.aggregatedStatusColor = MyStyle.clrNormal
-      imgState.source = MyStyle.imgNormal
+      imgState.source = MyStyle.imgNormal;
     } else if (window.aggregatedStatus === 2) {
-      str = MyStyle.strWarning
+        reportStr = "System Warning";
+      str = MyStyle.strWarning;
       window.aggregatedStatusColor = MyStyle.clrWarning
-      imgState.source = MyStyle.imgWarning
+      imgState.source = MyStyle.imgWarning;
     } else if (window.aggregatedStatus === 3) {
-      str = MyStyle.strFault
+        reportStr = "System Fault";
+      str = MyStyle.strFault;
       window.aggregatedStatusColor = MyStyle.clrFault
-      imgState.source = MyStyle.imgFault
+      imgState.source = MyStyle.imgFault;
     } else if (window.aggregatedStatus === 4) {
-      str = MyStyle.strError
+        reportStr = "System Error";
+      str = MyStyle.strError;
       window.aggregatedStatusColor = MyStyle.clrError
-      imgState.source = MyStyle.imgError
+      imgState.source = MyStyle.imgError;
     }
-    systemState.text = str
-    systemState.color = MyStyle.statusTextColor
+    systemState.text = str;
+    systemState.color = MyStyle.statusTextColor;
+
+    //decide and send a report over the serial port
+    if(window.aggregatedStatus != oldVal){
+        var tmpStr = "SystemMode=" + reportStr
+        submitTextField(tmpStr);
+        oldVal = window.aggregatedStatus;
+    }
   }
 
-  //Left here in case someone wants to add more pages....
+  //Left here to add more pages, if desired....
   SwipeView {
       id: view
       currentIndex: 0
@@ -228,7 +242,6 @@ ApplicationWindow {
           Loader {
               active: SwipeView.isCurrentItem || SwipeView.isNextItem || SwipeView.isPreviousItem
               sourceComponent: Text {
-                  //text: "foo " + index + "  "
                   Component.onCompleted: console.log("created:", index)
                   Component.onDestruction: console.log("destroyed:", index)
               }

@@ -59,9 +59,7 @@ Page {
         Layout.alignment: Qt.AlignHCenter
 
         currentValue: MyGlobal.engineRPMValue
-//        measuredMaxValue: MyGlobal.engineRPMmeasuredMaxValue
         maxText: MyGlobal.engineRPMmaxText
-//        measuredAvgValue: MyGlobal.engineRPMmeasuredAvgValue
         avgText: MyGlobal.engineRPMavgText
         minimumRangeValue: MyGlobal.engineRPMminimumRangeValue
         maximumRangeValue: MyGlobal.engineRPMmaximumRangeValue
@@ -170,9 +168,6 @@ Page {
 
         currentValue: MyGlobal.speedDial_currentValue
         measuredMaxValue: MyGlobal.speedDial_measuredMaxValue
-//        maxText: MyGlobal.speedDial_maxText
-//        measuredAvgValue: MyGlobal.speedDial_measuredAvgValue
-//        avgText: MyGlobal.speedDial_avgText
         minimumRangeValue: MyGlobal.speedDial_minimumRangeValue
         maximumRangeValue: MyGlobal.speedDial_maximumRangeValue
         warningValueLow: MyGlobal.speedDial_warningValueLow
@@ -295,7 +290,6 @@ Page {
         currentValue: MyGlobal.airDial_currentValue
         measuredMaxValue: MyGlobal.airDial_measuredMaxValue
         maxText: MyGlobal.airDial_maxText
-        measuredAvgValue: MyGlobal.airDial_measuredAvgValue
         avgText: MyGlobal.airDial_avgText
         minimumRangeValue: MyGlobal.airDial_minimumRangeValue
         maximumRangeValue: MyGlobal.airDial_maximumRangeValue
