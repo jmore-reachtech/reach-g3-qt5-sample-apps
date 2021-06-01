@@ -79,12 +79,13 @@ QByteArray rxBytes;
 void SerialController::onSerialReadyRead()
 {
     rxBytes.append(m_port.readAll());
-    if (!rxBytes.contains("\n"))
+    qDebug() << "Serial Message - " << rxBytes;
+    if (!rxBytes.contains("\r"))
     {
         return;
     }
 
-    int end = rxBytes.lastIndexOf("\n") + 1;
+    int end = rxBytes.lastIndexOf("\r") + 1;
     QStringList cmds = QString(rxBytes.mid(0, end)).split("\n", Qt::SkipEmptyParts);
     rxBytes = rxBytes.mid(end);
 

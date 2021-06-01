@@ -35,16 +35,17 @@ public:
 
     QString version(void);
     void doTheBeep(QString file);
-
-signals:
-    void doBeep(void);
-    void setSoundFile(QString file);
+    QString doCommand(QString cmd);
 
 public slots:
-    QString doCommand(QString cmd);
     QString execute(QString cmd);
     QString execute(QString cmd, QStringList args);
     bool executeUpgrade(QStringList args);
+
+signals:
+    void beep(void);
+    void setSoundFile(const QString file);
+
 
 private:
     QString m_version;

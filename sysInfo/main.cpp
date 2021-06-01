@@ -18,23 +18,22 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
-#include <QQmlPropertyMap>
-#include <QtQuick/QQuickWindow>
-#include <QtQuick/QQuickItem>
 #include <QSettings>
 #include <QQmlContext>
-#include <QDebug>
-#include <QCoreApplication>
-#include <QJsonDocument>
-#include <QJsonObject>
+#include <QLoggingCategory>
+#include <QQuickWindow>
+#include <QVariant>
 #include <QScreen>
+#include <QProcess>
+#include <QObject>
 #include <QThread>
-
+#include <QNetworkInterface>
 
 #include "signal.h"
 #include "common.h"
+#include "mainwindow.h"
 #include "serialcontroller.h"
 #include "translator.h"
 #include "network.h"
@@ -42,69 +41,76 @@
 #include "gpioController.h"
 #include "backlight.h"
 #include "system.h"
-#include "myGlobal.h"
 #include "myStyle.h"
-#include "canbus.h"
+#include "myGlobal.h"
 
-StyleValues  MyStyle;
+StyleValues MyStyle;
 GlobalValues MyGlobal;
 System mySystem;
-int scale;
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    engine.rootContext()->setContextProperty("MyGlobal", & MyGlobal);
-    qDebug() << "The global count is => " << MyGlobal.count();
-
     engine.rootContext()->setContextProperty("MyStyle", & MyStyle);
-    qDebug() << "The style count is => " << MyStyle.count();
+    engine.rootContext()->setContextProperty("MyGlobal", & MyGlobal);
 
-    Beeper beeper;
+    SerialController serialController;
     Network network;
-    Backlight backlight;
+    Beeper beeper;
 
     /* Need to register before the MainviewController is instantiated */
     qmlRegisterType < Network > ("net.reachtech", 1, 0, "Network");
     qmlRegisterType < Beeper > ("sound.reachtech", 1, 0, "Beeper");
-    qmlRegisterType < GpioController > ("gpio.reachtech", 1, 0, "GpioController");
+    qmlRegisterType < GpioController > ("gpioController.reachtech", 1, 0, "GpioController");
     qmlRegisterType < Backlight > ("backlight.reachtech", 1, 0, "Backlight");
     qmlRegisterType < System > ("system.reachtech", 1, 0, "System");
+
 
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect  screenGeometry = screen->geometry();
     MyGlobal.insert("screenWidth", screenGeometry.width());
+    MyGlobal.insert("screenHeight", screenGeometry.height());
+    MyGlobal.insert("screenFactor", screenGeometry.height());
 
-    scale = screenGeometry.height();
+    QString rtn = mySystem.doCommand("free -k");
+    MyGlobal.insert("free", rtn);
 
-    qDebug() << "Scale =" << scale;
-
-    MyGlobal.insert("screenHeight", scale);
-    MyGlobal.insert("screenFactor", scale);
-
-    SerialController serialController;
-    CanBus canBus;
-    beeper.setVolume(90);
-
-    engine.load("qrc:/main.qml");
-    if (engine.rootObjects().isEmpty())
-        return -1;
-
-    QObject * topLevel = engine.rootObjects().value(0);
-    QQuickWindow * window = qobject_cast < QQuickWindow * > (topLevel);
-    if (window == nullptr) {
-      qDebug() << "Can't instantiate window";
-    }
+    rtn = mySystem.version();
+    MyGlobal.insert("SDKversion", rtn);
+    qDebug() << "Version of SDK" << rtn;
 
     //Move the beeper to its own thread so it runs all by itself in background.
     // No waiting for completion of the beep...
+    beeper.setVolume(100);
     QThread *thread = new QThread();
     beeper.moveToThread(thread);
     thread->start();
 
-    bool success = QObject::connect(window, SIGNAL(submitTextField(QString)), & serialController, SLOT(send(QString)));
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    if (engine.rootObjects().isEmpty()) {
+      return -1;
+    }
+
+    QObject * topLevel = engine.rootObjects().value(0);
+    QQuickWindow * theWindow = qobject_cast < QQuickWindow * > (topLevel);
+
+    if (theWindow == nullptr) {
+      qDebug() << "Can't instantiate the main window";
+    }
+
+    qDebug() << "Main Init";
+    const QHostAddress &localhost = QHostAddress(QHostAddress::LocalHost);
+    for (const QHostAddress &address: QNetworkInterface::allAddresses()) {
+        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != localhost){
+             qDebug() << "System reports IP address =" << address.toString();
+             MyGlobal.insert("tcpAddr", address.toString());
+        }
+    }
+
+    bool success;
+    success = QObject::connect(theWindow, SIGNAL(submitTextField(QString)), &serialController, SLOT(send(QString)));
     Q_ASSERT(success);
 
     success = QObject::connect(&mySystem, SIGNAL(setSoundFile( const QString )), &beeper, SLOT(setSoundFile( const QString )) );
@@ -119,4 +125,5 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
+
 

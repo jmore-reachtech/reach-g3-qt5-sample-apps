@@ -19,8 +19,8 @@ Page {
 
   property int cols: 3 //how many columns to display
   property int rws: 2 //how many rows to display
-  property int colSpace: 40 //Math.round((width - MyStyle.dialWidth * cols) / (cols + 1))
-  property int rowSpace: 20 //Math.round((height - MyStyle.statusBarHeight - MyStyle.dialHeight - MyStyle.componentY) / (rws + 1))
+  property int colSpace: Math.round((width - MyStyle.dialWidth * cols) / (cols + 1))
+  property int rowSpace: Math.round((height - MyStyle.statusBarHeight - MyStyle.dialHeight - MyStyle.componentY) / (rws + 1))
 
   Rectangle {
     width: parent.width - colSpace

@@ -1,3 +1,5 @@
+// Copyright 2020 Reach Technology
+
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
@@ -17,40 +19,36 @@
 // IN THE SOFTWARE.
 
 #include "myStyle.h"
-#include "myGlobal.h"
 #include <QDebug>
-
-extern GlobalValues MyGlobal;
-extern int scale;
 
 StyleValues::StyleValues(QObject * parent): QQmlPropertyMap(this, parent) {
   setObjectName("style");
-  insert("statusBarHeight", QVariant::fromValue(scale/20));
-  insert("columnSpacing", QVariant::fromValue(scale/8)); //102
-  insert("rowSpacing", QVariant::fromValue(scale/20 ));// 40));
+  insert("statusBarHeight", QVariant::fromValue(40));
 
-  insert("themeDark", true);
-  insert("backColor", QVariant::fromValue(QString("black")));
-  insert("textColor", QVariant::fromValue(QString("white")));
-  insert("statusBackColor", QVariant::fromValue(QString("white")));
-  insert("statusTextColor", QVariant::fromValue(QString("")));
-
+  //coded values for different error or warning levels
   insert("clrOff", QVariant::fromValue(QString("gray")));
   insert("clrNormal", QVariant::fromValue(QString("green")));
   insert("clrWarning", QVariant::fromValue(QString("goldenrod")));
   insert("clrFault", QVariant::fromValue(QString("#ff3434")));
   insert("clrError", QVariant::fromValue(QString("red")));
 
-  insert("backColorLt", QVariant::fromValue(QString("white")));
-  insert("textColorLt", QVariant::fromValue(QString("black")));
-  insert("statusBackColorLt", QVariant::fromValue(QString("lightGrey")));
-  insert("statusTextColorLt", QVariant::fromValue(QString("black")));
+  //change from light to dark with a simple boolean -- preset values are then save to backColor, etc
+  insert("themeDark", true);
+  insert("backColor", QVariant::fromValue(QString("gray")));
+  insert("textColor", QVariant::fromValue(QString("white")));
+  insert("statusBackColor", QVariant::fromValue(QString("white")));
+  insert("statusTextColor", QVariant::fromValue(QString("gray")));
 
   insert("clrOffLt", QVariant::fromValue(QString("darkGray")));
   insert("clrNormalLt", QVariant::fromValue(QString("darkGreen")));
   insert("clrWarningLt", QVariant::fromValue(QString("yellow")));
   insert("clrFaultLt", QVariant::fromValue(QString("red")));
   insert("clrErrorLt", QVariant::fromValue(QString("darkRed")));
+
+  insert("backColorLt", QVariant::fromValue(QString("white")));
+  insert("textColorLt", QVariant::fromValue(QString("black")));
+  insert("statusBackColorLt", QVariant::fromValue(QString("lightGrey")));
+  insert("statusTextColorLt", QVariant::fromValue(QString("black")));
 
   insert("backColorDk", QVariant::fromValue(QString("black")));
   insert("textColorDk", QVariant::fromValue(QString("white")));
@@ -62,45 +60,25 @@ StyleValues::StyleValues(QObject * parent): QQmlPropertyMap(this, parent) {
   insert("clrWarningDk", QVariant::fromValue(QString("lightYellow")));
   insert("clrFaultDk", QVariant::fromValue(QString("tomato")));
   insert("clrErrorDk", QVariant::fromValue(QString("lightRed")));
+//----------------------------------------------------------------------------
 
   insert("fontName", QVariant::fromValue(QString("Source Sans Pro")));
   insert("fontSize", QVariant::fromValue(17));
 
-  insert("strOff", QVariant::fromValue(QString("System Off")));
-  insert("strNormal", QVariant::fromValue(QString("System Normal")));
-  insert("strWarning", QVariant::fromValue(QString("System Warning")));
-  insert("strFault", QVariant::fromValue(QString("System Fault")));
-  insert("strError", QVariant::fromValue(QString("System Error")));
-
-  insert("imgOff", QVariant::fromValue(QString("Images/led_off_40.png")));
-  insert("imgNormal", QVariant::fromValue(QString("Images/led_normal_40.png")));
-  insert("imgWarning", QVariant::fromValue(QString("Images/led_warning_40.png")));
-  insert("imgFault", QVariant::fromValue(QString("Images/led_fault_40.png")));
-  insert("imgError", QVariant::fromValue(QString("Images/led_error_40.png")));
   insert("imgLogo", QVariant::fromValue(QString("Images/reach_logo_color_30.png")));
-
   insert("borderWidth", QVariant::fromValue(1));
   insert("borderColor", QVariant::fromValue(QString("lightGray")));
 
-  insert("drawerFontSize", QVariant::fromValue(22));
-  insert("drawerLeftMargin", QVariant::fromValue(15));
+  insert("connectedText",QVariant::fromValue(QString( "Connect") ));
+  insert("clrConnBox", QVariant::fromValue(QString("tan")));
+  insert("clrConnect", QVariant::fromValue(QString("gray")));
+  insert("clrBtnConn", QVariant::fromValue(QString("lightGray")));
+  insert("connectedFontColor", QVariant::fromValue(QString("black")));
 
-  insert("dialWidth", 300); //(scale>300) ? scale/2 : 100);  //QVariant::fromValue(225));
-  insert("dialHeight", 500); //(scale>300) ? scale/2 : 150); // 150); //scale/2); //QVariant::fromValue(300));
-  insert("dialBarWidth", (scale>300) ? 15 : 9); //10); //scale/24)); //15
-  insert("dialTicksOn", QVariant::fromValue(true));
-
-  insert("componentX", (scale>300) ? 133 : 60); //100); // (scale>300) ? 133 : 100); //QVariant::fromValue(scale/6)); //133
-  insert("componentY", (scale>300) ? 160 : 70); //60); //QVariant::fromValue(scale/5)); //160));
-  insert("iconSize", (scale>300) ? 100 : 50); //50); //QVariant::fromValue(scale/2)); //100));
-
-  insert("textY", (scale>300) ? 90 : 45); //QVariant::fromValue(scale/2)); //90));
-  insert("imgX", QVariant::fromValue(QString("Images/X_100.png")));
-
-  insert("metricBool", QVariant::fromValue(false));
-  insert("metricStr", QVariant::fromValue(QString("°F")));
-  insert("centigradeStr", QVariant::fromValue(QString("°C")));
-  insert("fahrenheitStr", QVariant::fromValue(QString("°F")));
+  insert("clrStatus", QVariant::fromValue(QString("white")));
+  insert("clrNonStatus", QVariant::fromValue(QString("green")));
+  insert("clrSerial", QVariant::fromValue(QString("white")));
+  insert("clrTCP", QVariant::fromValue(QString("green")));
 }
 
 void StyleValues::startEngine() {

@@ -33,17 +33,21 @@ Beeper::Beeper(QObject *parent): QObject(parent), m_playbackHandle(nullptr), m_w
     int err;
     if ((err = snd_pcm_open(&m_playbackHandle, "default", SND_PCM_STREAM_PLAYBACK, 0)) < 0)
     {
-        qDebug("Can't open sound card default: %s\n", snd_strerror(err));
+        qDebug("[Beep] Can't opensetCmd sound card default: %s\n", snd_strerror(err));
     }
     else
     {
-        qDebug() << "Sound card is open";
+        qDebug() << "[Beep] Sound card is open";
     }
+
+    setSoundFile("/data/share/audio/beep.wav");
+    setVolume(90);
+
 }
 
 Beeper::~Beeper()
 {
-    qDebug() << "Closing sound card";
+    qDebug() << "[Beep] Closing sound card";
     snd_pcm_close(m_playbackHandle);
 
     if (m_wavePtr != nullptr)
@@ -63,14 +67,16 @@ void Beeper::setSoundFile(const QString &path)
     struct wav_header header;
     int ret;
     currentSoundFile = path;
-//    qDebug() << "Opening sound file: " << path;
+    qDebug() << "[Beep] Opening sound file: " << path;
     memset(&header, 0, sizeof(struct wav_header));
 
     file = fopen(path.toUtf8().data(), "r");
     if (file == nullptr)
     {
-        qDebug() << "Failed to open wav file: ";
+        qDebug() << "[Beep] Failed to open sound file: " << path;
         return;
+    } else {
+         qDebug() << "[Beep] Loaded sound file: " << path;
     }
 
     if (m_wavePtr != nullptr)
@@ -85,7 +91,7 @@ void Beeper::setSoundFile(const QString &path)
     if ((header.sample_per_sec != HZ_44100) && (header.bits_per_sample != BITS_PER_SAMPLE_16) &&
         (header.channels != 2))
     {
-        qDebug() << "Invalid wav file format, required format is: "
+        qDebug() << "[Beep] Invalid wav file format, required format is: "
         "Signed 16 bit Little Endian, Rate 44100 Hz, Mono";
         return;
     }
@@ -157,7 +163,6 @@ void Beeper::setVolume(int vol)
     QString setCmd = "amixer sset PCM " + QString::number(vol) + "%";
     qDebug() << "Beep" << setCmd;
     mySystem.doCommand(setCmd);
-
 }
 
 

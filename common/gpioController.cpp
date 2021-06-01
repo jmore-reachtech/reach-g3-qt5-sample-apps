@@ -180,10 +180,8 @@ bool GpioController::setDirection(int pin, QString dir)
 
 bool GpioController::toggle(int pin)
 {
-//    qDebug() << "TOGGLE pin#" << pin;
-
     int val = getPin(pin);
-    qDebug()<<"Pin Value"<<val;
+    qDebug() << "GPIO Pin Value"<<val;
 
     if (val==0) {
         setPin(pin,1);
@@ -191,7 +189,7 @@ bool GpioController::toggle(int pin)
         setPin(pin,0);
     }
 
-    qDebug() << "Toggle " << pin << "=" << val;
+    qDebug() << "Toggle GPIO" << pin << "=" << val;
 
     return true;
 }

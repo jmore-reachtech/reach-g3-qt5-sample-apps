@@ -16,21 +16,22 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#ifndef MYGLOBAL_H
-#define MYGLOBAL_H
-
+#ifndef MyStyle_H
+#define MyStyle_H
 #include <QQmlPropertyMap>
 
-class GlobalValues : public QQmlPropertyMap
+class StyleValues: public QQmlPropertyMap
 {
     Q_OBJECT
-    public:
-    GlobalValues(QObject* parent = nullptr);
+
+public:
+    StyleValues(QObject *parent = nullptr);
 
     Q_INVOKABLE void startEngine();
 
     QVariant doUpdate(const QString key, const QVariant input);
+    QString getColor(const QString name);
 
 };
 
-#endif // MYGLOBAL_H
+#endif	// MyStyle_H

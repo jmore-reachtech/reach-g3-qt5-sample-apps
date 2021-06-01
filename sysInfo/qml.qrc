@@ -1,0 +1,42 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Fonts/SourceSansPro-Black.otf</file>
+        <file>Fonts/SourceSansPro-BlackIt.otf</file>
+        <file>Fonts/SourceSansPro-Bold.otf</file>
+        <file>Fonts/SourceSansPro-BoldIt.otf</file>
+        <file>Fonts/SourceSansPro-ExtraLight.otf</file>
+        <file>Fonts/SourceSansPro-ExtraLightIt.otf</file>
+        <file>Fonts/SourceSansPro-It.otf</file>
+        <file>Fonts/SourceSansPro-Light.otf</file>
+        <file>Fonts/SourceSansPro-LightIt.otf</file>
+        <file>Fonts/SourceSansPro-Regular.otf</file>
+        <file>Fonts/SourceSansPro-Semibold.otf</file>
+        <file>Fonts/SourceSansPro-SemiboldIt.otf</file>
+        <file>Images/ac.png</file>
+        <file>Images/battery.png</file>
+        <file>Images/bubbles_100x100.png</file>
+        <file>Images/circleX_100.png</file>
+        <file>Images/coolant.png</file>
+        <file>Images/dc.png</file>
+        <file>Images/engine.png</file>
+        <file>Images/fuel.png</file>
+        <file>Images/gps.png</file>
+        <file>Images/lat_long.png</file>
+        <file>Images/led_error_40.png</file>
+        <file>Images/led_fault_40.png</file>
+        <file>Images/led_normal_40.png</file>
+        <file>Images/led_off_40.png</file>
+        <file>Images/led_warning_40.png</file>
+        <file>Images/liquid_temperature.png</file>
+        <file>Images/oil.png</file>
+        <file>Images/reach_logo_color_30.png</file>
+        <file>Images/rf.png</file>
+        <file>Images/speedo_back.png</file>
+        <file>Images/thermometer.png</file>
+        <file>Images/wifi_100.png</file>
+        <file>Images/wifi_40.png</file>
+        <file>Images/X_100.png</file>
+        <file>main.cpp</file>
+    </qresource>
+</RCC>

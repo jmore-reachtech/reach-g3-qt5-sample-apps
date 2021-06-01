@@ -1,9 +1,9 @@
-QT += core quick gui serialbus serialport qml widgets
+QT += quick gui serialbus serialport qml widgets
 
 CONFIG += c++11
 INCLUDEPATH += include ../common/include
 LIBS += -lasound -lgpiod
-TARGET = gpio
+TARGET = Terminal
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -32,31 +32,10 @@ else: unix:!android: target.path = /data/bin
 
 SOURCES += \
     main.cpp \
-    myGlobal.cpp \
-    myStyle.cpp \
-    ../common/backlight.cpp \
-    ../common/beeper.cpp \
-    ../common/gpioController.cpp \
-    ../common/gpiopin.cpp \
-    ../common/network.cpp \
-    ../common/serialcontroller.cpp \
-    ../common/system.cpp \
-    ../common/translator.cpp
+    serialcontroller.cpp
 
 HEADERS += \
-    include/myGlobal.h \
-    include/myStyle.h \
-    ../common/include/backlight.h \
-    ../common/include/beeper.h \
-    ../common/include/common.h \
-    ../common/include/gpioController.h \
-    ../common/include/gpiopin.h \
-    ../common/include/i2c-dev.h \
-    ../common/include/network.h \
-    ../common/include/serialcontroller.h \
-    ../common/include/sound.h \
-    ../common/include/system.h \
-    ../common/include/translator.h
+    include/serialcontroller.h
 
 DISTFILES += \
     main.qml

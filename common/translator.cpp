@@ -55,7 +55,10 @@ QStringList Translator::translateSerial(QString msg) {
   if (split.length() != 2)  {
     if(( msg.compare("\r") != 0)) {
         qDebug() << "ERROR - Message in wrong format, missing equals -- " << msg ;
+    } else{
+        qDebug() << "SPLIT -" << msg ;
     }
+
     return split;
   }
 

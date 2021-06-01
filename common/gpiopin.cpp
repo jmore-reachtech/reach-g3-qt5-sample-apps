@@ -61,7 +61,7 @@ void GpioPin::onPinPoll()
         return;
     }
 
-    qDebug()<<"Polling Pin" << m_num << "value" << val << "previous Value"<<m_val;
+    qDebug()<<"GPIO" << m_num << "=" << val << " Previous Value ="<<m_val;
     m_val = val;
     emit pinValueChanged(val);
 }

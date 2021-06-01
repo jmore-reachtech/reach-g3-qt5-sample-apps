@@ -1,3 +1,23 @@
+// Copyright 2020 Reach Technology
+
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlPropertyMap>
@@ -27,9 +47,6 @@
 StyleValues  MyStyle;
 GlobalValues MyGlobal;
 System mySystem;
-Beeper beeper;
-Network network;
-Backlight backlight;
 
 int main(int argc, char *argv[])
 {
@@ -41,6 +58,10 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("MyStyle", & MyStyle);
     qDebug() << "The style count is => " << MyStyle.count();
+
+    Beeper beeper;
+    Network network;
+    Backlight backlight;
 
     /* Need to register before the MainviewController is instantiated */
     qmlRegisterType < Network > ("net.reachtech", 1, 0, "Network");
@@ -78,7 +99,7 @@ int main(int argc, char *argv[])
 
     qDebug() << "[Main] start Beep";
     beeper.setVolume(90);
-    beeper.setSoundFile("/data/app/sounds/beep.wav");
+    beeper.setSoundFile("/data/share/audio/beep.wav");
     beeper.beep();  //play the sound
     qDebug() << "[Main] end Beep";
 

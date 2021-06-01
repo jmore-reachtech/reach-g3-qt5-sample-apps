@@ -76,12 +76,13 @@ bool System::executeUpgrade(QStringList args)
 }
 
 // Set the wav file and then play it.
-void System::doTheBeep(QString file)
+void System::doTheBeep(const QString file)
 {
-    qDebug() << "doTheBeep";
+    qDebug() << "Opening " << file ;
     emit setSoundFile(file);  //set the sound file
-    emit doBeep();            //do the actual beep
+    emit beep();            //do the actual beep
 }
+
 
 // Execute a linux command and return the output as a string
 QString System::doCommand(QString cmd)

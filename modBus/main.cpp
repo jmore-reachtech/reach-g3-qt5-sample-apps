@@ -20,53 +20,47 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QQmlPropertyMap>
-#include <QtQuick/QQuickWindow>
-#include <QtQuick/QQuickItem>
-#include <QSettings>
 #include <QQmlContext>
-#include <QDebug>
-#include <QCoreApplication>
-#include <QJsonDocument>
-#include <QJsonObject>
+#include <QQuickWindow>
 #include <QScreen>
-#include <QThread>
 
-
-#include "signal.h"
-#include "common.h"
-#include "serialcontroller.h"
-#include "translator.h"
-#include "network.h"
-#include "beeper.h"
-#include "gpioController.h"
 #include "backlight.h"
+#include "beeper.h"
+#include "common.h"
+#include "gpioController.h"
+#include "i2c-dev.h"
+#include "network.h"
+#include "serialcontroller.h"
+#include "signal.h"
+#include "sound.h"
 #include "system.h"
-#include "myGlobal.h"
-#include "myStyle.h"
-#include "canbus.h"
+#include "translator.h"
 
-StyleValues  MyStyle;
+#include "myStyle.h"
+#include "myGlobal.h"
+#include "modb.h"
+
+StyleValues MyStyle;
 GlobalValues MyGlobal;
 System mySystem;
-int scale;
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
+    engine.rootContext()->setContextProperty("MyStyle", & MyStyle);
     engine.rootContext()->setContextProperty("MyGlobal", & MyGlobal);
     qDebug() << "The global count is => " << MyGlobal.count();
-
-    engine.rootContext()->setContextProperty("MyStyle", & MyStyle);
     qDebug() << "The style count is => " << MyStyle.count();
 
+    SerialController serialController;
+    ModB modB;
     Beeper beeper;
-    Network network;
-    Backlight backlight;
+    GpioController gpioController;
 
-    /* Need to register before the MainviewController is instantiated */
+    /* Need to register */
     qmlRegisterType < Network > ("net.reachtech", 1, 0, "Network");
     qmlRegisterType < Beeper > ("sound.reachtech", 1, 0, "Beeper");
     qmlRegisterType < GpioController > ("gpio.reachtech", 1, 0, "GpioController");
@@ -76,46 +70,42 @@ int main(int argc, char *argv[])
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect  screenGeometry = screen->geometry();
     MyGlobal.insert("screenWidth", screenGeometry.width());
+    MyGlobal.insert("screenHeight", screenGeometry.height());
+    MyGlobal.insert("screenFactor", screenGeometry.height());
+    //qDebug() << "Screen Size is"  << MyGlobal.value("screenWidth").toInt() << "x" <<  MyGlobal.value("screenHeight").toInt();
 
-    scale = screenGeometry.height();
 
-    qDebug() << "Scale =" << scale;
-
-    MyGlobal.insert("screenHeight", scale);
-    MyGlobal.insert("screenFactor", scale);
-
-    SerialController serialController;
-    CanBus canBus;
-    beeper.setVolume(90);
-
-    engine.load("qrc:/main.qml");
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
-        return -1;
+      return -1;
+
+    qDebug() << "Engine LOAD complete";
 
     QObject * topLevel = engine.rootObjects().value(0);
-    QQuickWindow * window = qobject_cast < QQuickWindow * > (topLevel);
-    if (window == nullptr) {
+    QQuickWindow * theWindow = qobject_cast < QQuickWindow * > (topLevel);
+
+    if (theWindow == nullptr) {
       qDebug() << "Can't instantiate window";
     }
 
-    //Move the beeper to its own thread so it runs all by itself in background.
-    // No waiting for completion of the beep...
-    QThread *thread = new QThread();
-    beeper.moveToThread(thread);
-    thread->start();
+    qDebug() << "Screen Factor is"  << MyGlobal.value("screenFactor").toInt();
 
-    bool success = QObject::connect(window, SIGNAL(submitTextField(QString)), & serialController, SLOT(send(QString)));
+    bool success = QObject::connect(theWindow, SIGNAL(submitTextField(QString)), &serialController, SLOT(send(QString)));
     Q_ASSERT(success);
-
-    success = QObject::connect(&mySystem, SIGNAL(setSoundFile( const QString )), &beeper, SLOT(setSoundFile( const QString )) );
+    success = QObject::connect(&modB, SIGNAL(submitTextField(QString)), &serialController, SLOT(send(QString)));
     Q_ASSERT(success);
-
-    success = QObject::connect(&mySystem, SIGNAL(beep(void)), &beeper, SLOT(beep(void)) );
+    success = QObject::connect(&modB, SIGNAL(setConsole(QVariant)),theWindow, SLOT(setConsole(QVariant)));
     Q_ASSERT(success);
-
-    qDebug() << "[Main] start Beep";
-    mySystem.doTheBeep("/data/share/audio/lab.wav");
-    qDebug() << "[Main] end Beep";
+    success = QObject::connect(theWindow, SIGNAL(processConnect()), &modB, SLOT(onDoConnectChanged()));
+    Q_ASSERT(success);
+    success = QObject::connect(theWindow, SIGNAL(processDisconnect()), &modB, SLOT(onDoDisconnectChanged()));
+    Q_ASSERT(success);
+    success = QObject::connect(theWindow, SIGNAL(connTypeChanged()), &modB, SLOT(onModConnectTypeTCPChanged()));
+    Q_ASSERT(success);
+    success = QObject::connect(theWindow, SIGNAL(read() ), &modB, SLOT(read()));
+    Q_ASSERT(success);
+    success = QObject::connect(theWindow, SIGNAL(write() ), &modB, SLOT(write()));
+    Q_ASSERT(success);
 
     return app.exec();
 }

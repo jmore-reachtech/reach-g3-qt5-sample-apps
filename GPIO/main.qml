@@ -512,7 +512,7 @@ ApplicationWindow {
     target: MyGlobal
     function onDoToggleChanged() {
        val = 0;
-      console.log("Toggle " + val)
+      console.log("Toggle GPIO" + val)
       toggle(val)
     }
   } //Connections

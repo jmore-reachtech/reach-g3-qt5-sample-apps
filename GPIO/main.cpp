@@ -45,12 +45,8 @@
 
 StyleValues MyStyle;
 GlobalValues MyGlobal;
-
-
-GpioController gpioController;
-SerialController serialController;
 System mySystem;
-Beeper beeper;
+
 
 int main(int argc, char *argv[])
 {
@@ -63,6 +59,10 @@ int main(int argc, char *argv[])
     qDebug() << "The global count is => " << MyGlobal.count();
     qDebug() << "The style count is => " << MyStyle.count();
 
+
+    GpioController gpioController;
+    SerialController serialController;
+    Beeper beeper;
 
     GpioPin P0;
     gpioController.setDirection(0,"in");
@@ -123,10 +123,14 @@ int main(int argc, char *argv[])
     success = QObject::connect(theWindow, SIGNAL(read(int) ), &gpioController, SLOT(getPin(int)));
     Q_ASSERT(success);
 
+    success = QObject::connect(&mySystem, SIGNAL(setSoundFile( const QString )), &beeper, SLOT(setSoundFile( const QString )) );
+    Q_ASSERT(success);
+
+    success = QObject::connect(&mySystem, SIGNAL(beep(void)), &beeper, SLOT(beep(void)) );
+    Q_ASSERT(success);
+
     qDebug() << "[Main] start Beep";
-    beeper.setVolume(90);
-    beeper.setSoundFile("/data/app/sounds/beep.wav");
-    beeper.beep();  //play the sound
+    mySystem.doTheBeep("/data/share/audio/lab.wav");
     qDebug() << "[Main] end Beep";
 
     return app.exec();

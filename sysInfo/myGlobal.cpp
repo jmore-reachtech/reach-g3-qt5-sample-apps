@@ -1,3 +1,5 @@
+// Copyright 2020 Reach Technology
+
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
@@ -16,21 +18,31 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#ifndef MYGLOBAL_H
-#define MYGLOBAL_H
+#include "myGlobal.h"
+#include <QDebug>
+#include <QStandardItemModel>
+#include <QApplication>
 
-#include <QQmlPropertyMap>
+GlobalValues::GlobalValues(QObject * parent): QQmlPropertyMap(this, parent) {
+    setObjectName("global");
 
-class GlobalValues : public QQmlPropertyMap
-{
-    Q_OBJECT
-    public:
-    GlobalValues(QObject* parent = nullptr);
+    insert("tcpAddr", "10.0.0.98");
 
-    Q_INVOKABLE void startEngine();
+    insert("comSerialName", "Com1");
+    insert("comSerialBaud", 115200);
+    insert("comSerialParity", "N");
+    insert("comSerialDataBits", 8);
+    insert("comSerialStopBits", 1);
+    insert("comSerialFlowControl", "N");
 
-    QVariant doUpdate(const QString key, const QVariant input);
+    insert("rs485SerialName", "/dev/ttymxc3");
+    insert("rs485SerialBaud", 115200);
+    insert("rs485SerialParity", "N");
+    insert("rs485SerialDataBits", 8);
+    insert("rs485SerialStopBits", 1);
 
-};
+}
 
-#endif // MYGLOBAL_H
+void GlobalValues::startEngine() {
+  qDebug() << "Start the GLOBAL ENGINE " << Q_FUNC_INFO;
+}

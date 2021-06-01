@@ -16,21 +16,65 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#ifndef MYGLOBAL_H
-#define MYGLOBAL_H
+#ifndef MODB_H
+#define MODB_H
 
-#include <QQmlPropertyMap>
+#include <QMainWindow>
+#include <QModbusDataUnit>
+#include <QObject>
+#include <QString>
+#include <QVariant>
+#include <QModbusDevice>
+#include <QModbusClient>
 
-class GlobalValues : public QQmlPropertyMap
+QT_BEGIN_NAMESPACE
+class QModbusClient;
+class QModbusReply;
+
+namespace Ui
+{
+    class theWindow;
+}
+
+QT_END_NAMESPACE
+
+class WriteRegisterModel;
+
+class ModB: public QObject
 {
     Q_OBJECT
-    public:
-    GlobalValues(QObject* parent = nullptr);
 
-    Q_INVOKABLE void startEngine();
+public:
+    explicit ModB(QObject *parent = nullptr);
+    ~ModB();
 
-    QVariant doUpdate(const QString key, const QVariant input);
+    qint8 connValue();
 
+    void updateConsole(QString text);
+signals:
+    void setConsole(QVariant text);
+    void submitTextField(QString text);
+
+public slots:
+    void onConnValueChanged();
+    void onModConnectTypeTCPChanged();
+    void onConnStateChanged();
+    void onDoWriteChanged();
+    void onDoConnectChanged();
+    void onDoDisconnectChanged();
+    void read();
+    void write();
+
+private:
+    void doConnect();
+    void doDisconnect();
+    void readReady();
+    QModbusDataUnit readRequest();
+    QModbusDataUnit writeRequest();
+
+    QModbusReply * lastRequest;
+    QModbusClient * modbusDevice;
+    WriteRegisterModel * writeModel;
 };
 
-#endif // MYGLOBAL_H
+#endif	// MODB_H
