@@ -1,23 +1,3 @@
-// Copyright 2020 Reach Technology
-
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlPropertyMap>
@@ -38,7 +18,6 @@
 #include "translator.h"
 #include "network.h"
 #include "beeper.h"
-#include "gpioController.h"
 #include "backlight.h"
 #include "system.h"
 #include "myGlobal.h"
@@ -47,6 +26,9 @@
 StyleValues  MyStyle;
 GlobalValues MyGlobal;
 System mySystem;
+Beeper beeper;
+Network network;
+Backlight backlight;
 
 int main(int argc, char *argv[])
 {
@@ -59,14 +41,10 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("MyStyle", & MyStyle);
     qDebug() << "The style count is => " << MyStyle.count();
 
-    Beeper beeper;
-    Network network;
-    Backlight backlight;
-
     /* Need to register before the MainviewController is instantiated */
     qmlRegisterType < Network > ("net.reachtech", 1, 0, "Network");
     qmlRegisterType < Beeper > ("sound.reachtech", 1, 0, "Beeper");
-    qmlRegisterType < GpioController > ("gpio.reachtech", 1, 0, "GpioController");
+//    qmlRegisterType < GpioController > ("gpio.reachtech", 1, 0, "GpioController");
     qmlRegisterType < Backlight > ("backlight.reachtech", 1, 0, "Backlight");
     qmlRegisterType < System > ("system.reachtech", 1, 0, "System");
 

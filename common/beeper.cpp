@@ -40,8 +40,7 @@ Beeper::Beeper(QObject *parent): QObject(parent), m_playbackHandle(nullptr), m_w
         qDebug() << "[Beep] Sound card is open";
     }
 
-    setSoundFile("/data/share/audio/beep.wav");
-    setVolume(90);
+//    setVolume(90);
 
 }
 
@@ -67,7 +66,7 @@ void Beeper::setSoundFile(const QString &path)
     struct wav_header header;
     int ret;
     currentSoundFile = path;
-    qDebug() << "[Beep] Opening sound file: " << path;
+//    qDebug() << "[Beep] Opening sound file: " << path;
     memset(&header, 0, sizeof(struct wav_header));
 
     file = fopen(path.toUtf8().data(), "r");
@@ -162,7 +161,8 @@ void Beeper::setVolume(int vol)
     qDebug() << "Beep - Set Volume to " << vol;
     QString setCmd = "amixer sset PCM " + QString::number(vol) + "%";
     qDebug() << "Beep" << setCmd;
-    mySystem.doCommand(setCmd);
+//    mySystem.doCommand(setCmd);
+
 }
 
 

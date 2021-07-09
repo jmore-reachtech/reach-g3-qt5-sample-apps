@@ -58,7 +58,6 @@ QStringList Translator::translateSerial(QString msg) {
     } else{
         qDebug() << "SPLIT -" << msg ;
     }
-
     return split;
   }
 

@@ -22,6 +22,8 @@
 #define SYSTEM_H
 
 #include <QObject>
+#include <QString>
+#include <qqml.h>
 
 #define SYSTEM_RELEASE_FILE "/etc/reach-release"
 
@@ -29,23 +31,23 @@ class System : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString version READ version)
+    QML_ELEMENT
 
 public:
     explicit System(QObject *parent = nullptr);
 
     QString version(void);
     void doTheBeep(QString file);
-    QString doCommand(QString cmd);
+
+signals:
+    void doBeep(void);
+    void setSoundFile(QString file);
 
 public slots:
+    QString doCommand(QString cmd);
     QString execute(QString cmd);
     QString execute(QString cmd, QStringList args);
     bool executeUpgrade(QStringList args);
-
-signals:
-    void beep(void);
-    void setSoundFile(const QString file);
-
 
 private:
     QString m_version;

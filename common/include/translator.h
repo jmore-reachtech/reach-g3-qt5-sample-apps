@@ -25,10 +25,12 @@
 #include <QObject>
 #include <QSettings>
 #include <QFile>
+#include <qqml.h>
 
 class Translator : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
 
 public:
     Translator(QObject *parent = 0);

@@ -27,7 +27,7 @@ QML_DESIGNER_IMPORT_PATH =
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /data/app/$${TARGET}/bin
+else: unix:!android: target.path = /data/bin
 !isEmpty(target.path): INSTALLS += target
 
 SOURCES += \
@@ -36,7 +36,6 @@ SOURCES += \
     myStyle.cpp \
     ../common/backlight.cpp \
     ../common/beeper.cpp \
-    ../common/gpioController.cpp \
     ../common/network.cpp \
     ../common/serialcontroller.cpp \
     ../common/system.cpp \
@@ -48,8 +47,6 @@ HEADERS += \
     ../common/include/backlight.h \
     ../common/include/beeper.h \
     ../common/include/common.h \
-    ../common/include/gpioController.h \
-    ../common/include/i2c-dev.h \
     ../common/include/network.h \
     ../common/include/serialcontroller.h \
     ../common/include/sound.h \

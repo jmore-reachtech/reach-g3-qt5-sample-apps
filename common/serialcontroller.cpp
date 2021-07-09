@@ -51,7 +51,7 @@ SerialController::SerialController(QObject *parent): QObject(parent), m_settings
     if (m_port.open(QIODevice::ReadWrite))
     {
         connect(&m_port, &QSerialPort::readyRead, this, &SerialController::onSerialReadyRead);
-        qDebug() << "Serial port: " << m_port.portName() << " is up";
+        qDebug() << "[Serial] Port:" << m_port.portName();
     }
     else
     {
@@ -74,12 +74,18 @@ void SerialController::send(QString msg)
     m_port.write(msg.append("\n\r").toUtf8());
 }
 
+void SerialController::append(QByteArray msg)
+{
+    m_port.write(msg);
+}
+
 QByteArray rxBytes;
 
 void SerialController::onSerialReadyRead()
 {
+//    qDebug() << "[Serial] .";
     rxBytes.append(m_port.readAll());
-    qDebug() << "Serial Message - " << rxBytes;
+//    append(rxBytes);
     if (!rxBytes.contains("\r"))
     {
         return;

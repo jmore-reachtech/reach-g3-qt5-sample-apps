@@ -1,3 +1,5 @@
+// Copyright 2020 Reach Technology
+
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
@@ -16,65 +18,23 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-#ifndef MODB_H
-#define MODB_H
+#ifndef MYGLOBAL_H
+#define MYGLOBAL_H
 
-#include <QMainWindow>
-#include <QModbusDataUnit>
-#include <QObject>
-#include <QString>
-#include <QVariant>
-#include <QModbusDevice>
-#include <QModbusClient>
+#include <QQmlPropertyMap>
+#include <QKeyEvent>
 
-QT_BEGIN_NAMESPACE
-class QModbusClient;
-class QModbusReply;
-
-namespace Ui
-{
-    class theWindow;
-}
-
-QT_END_NAMESPACE
-
-class WriteRegisterModel;
-
-class ModB: public QObject
+class GlobalValues : public QQmlPropertyMap
 {
     Q_OBJECT
-
 public:
-    explicit ModB(QObject *parent = nullptr);
-    ~ModB();
+    GlobalValues(QObject* parent = nullptr);
 
-    qint8 connValue();
+    Q_INVOKABLE void startEngine();
+    QVariant doUpdate(const QString key, const QVariant input);
+    void sendKeyEvent(char key);
 
-    void updateConsole(QString text);
-signals:
-    void setConsole(QVariant text);
-    void submitTextField(QString text);
-
-public slots:
-    void onConnValueChanged();
-    void onModConnectTypeTCPChanged();
-    void onConnStateChanged();
-    void onDoWriteChanged();
-    void onDoConnectChanged();
-    void onDoDisconnectChanged();
-    void read();
-    void write();
-
-private:
-    void doConnect();
-    void doDisconnect();
-    void readReady();
-    QModbusDataUnit readRequest();
-    QModbusDataUnit writeRequest();
-
-    QModbusReply * lastRequest;
-    QModbusClient * modbusDevice;
-    WriteRegisterModel * writeModel;
+//protected:
 };
 
-#endif	// MODB_H
+#endif // MYGLOBAL_H

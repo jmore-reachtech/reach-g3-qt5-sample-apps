@@ -29,6 +29,18 @@
 GlobalValues::GlobalValues(QObject * parent): QQmlPropertyMap(this, parent) {
     setObjectName("global");
 
+    insert("debugMessages", false);
+    insert("gpioPin0Value", 0);
+    insert("gpioPin1Value", 0);
+    insert("gpioPin2Value", 0);
+    insert("gpioPin3Value", 0);
+    insert("gpioPin4Value", 0);
+
+    insert("setGpioPin1", 0);
+    insert("setGpioPin2", 0);
+    insert("setGpioPin3", 0);
+    insert("setGpioPin4", 0);
+
     insert("modConnectTypeTCP", false);
     insert("connectedBool", false);
     insert("doConnect", false);

@@ -23,6 +23,7 @@
 
 #include <QObject>
 #include <QFile>
+#include <qqml.h>
 
 #define BACKLIGHT_CTRL          "/sys/class/backlight/backlight/brightness"
 #define BACKLIGHT_CTRL_INVALID  "/dev/null"
@@ -31,6 +32,7 @@ class Backlight : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int brightness READ brightness WRITE setBrightness NOTIFY backlightChanged)
+    QML_ELEMENT
 
 public:
     explicit Backlight(QObject *parent = nullptr);

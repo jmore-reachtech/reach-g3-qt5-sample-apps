@@ -1,3 +1,5 @@
+// Copyright 2020 Reach Technology
+
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation
@@ -18,20 +20,21 @@
 
 #ifndef MyStyle_H
 #define MyStyle_H
+
 #include <QQmlPropertyMap>
 
-class StyleValues: public QQmlPropertyMap
-{
-    Q_OBJECT
+class StyleValues: public QQmlPropertyMap {
+  Q_OBJECT
+  public:
+    StyleValues(QObject * parent = nullptr);
 
-public:
-    StyleValues(QObject *parent = nullptr);
+  Q_INVOKABLE void startEngine();
 
-    Q_INVOKABLE void startEngine();
+  QVariant doUpdate(const QString key,
+    const QVariant input);
+  QString getColor(const QString name);
 
-    QVariant doUpdate(const QString key, const QVariant input);
-    QString getColor(const QString name);
-
+  //protected:
 };
 
-#endif	// MyStyle_H
+#endif // MyStyle_H

@@ -22,11 +22,13 @@
 #define NETWORK_H
 
 #include <QObject>
+#include <qqml.h>
 
 class Network : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString ipAddress READ ipAddress WRITE setIpAddress NOTIFY ipAddressChanged)
+    QML_ELEMENT
 
 public:
     explicit Network(QObject *parent = nullptr);

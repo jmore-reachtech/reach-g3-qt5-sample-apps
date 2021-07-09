@@ -18,6 +18,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
+#include <QCoreApplication>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QSettings>
@@ -31,9 +32,8 @@
 #include "backlight.h"
 #include "beeper.h"
 #include "common.h"
-#include "gpioController.h"
-#include "gpiopin.h"
-#include "i2c-dev.h"
+#include "gpiopininput.h"
+#include "gpiopinoutput.h"
 #include "network.h"
 #include "serialcontroller.h"
 #include "sound.h"
@@ -50,40 +50,23 @@ System mySystem;
 
 int main(int argc, char *argv[])
 {
-
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
+    QCoreApplication::addLibraryPath("/data/sbin/plugins");
+
+    qDebug() << "Lib paths =  " << QCoreApplication::libraryPaths();
+
     engine.rootContext()->setContextProperty("MyStyle", & MyStyle);
     engine.rootContext()->setContextProperty("MyGlobal", & MyGlobal);
-    qDebug() << "The global count is => " << MyGlobal.count();
-    qDebug() << "The style count is => " << MyStyle.count();
 
-
-    GpioController gpioController;
-    SerialController serialController;
     Beeper beeper;
-
-    GpioPin P0;
-    gpioController.setDirection(0,"in");
-    gpioController.setDirection(1,"out");
-    gpioController.setDirection(2,"out");
-    gpioController.setDirection(3,"out");
-    gpioController.setDirection(4,"out");
-    gpioController.setDirection(5,"out");
-
-    gpioController.setPin(1,1);
-    gpioController.setPin(2,1);
-    gpioController.setPin(3,1);
-    gpioController.setPin(4,1);
-    gpioController.setPin(5,1);
-
-    P0.setNumber(0);
-    P0.setPoll(1);
+    SerialController serialController;
 
     qmlRegisterType < Network > ("net.reachtech", 1, 0, "Network");
     qmlRegisterType < Beeper > ("sound.reachtech", 1, 0, "Beeper");
-    qmlRegisterType < GpioController > ("GpioController.reachtech", 1, 0, "Gpio");
+    qmlRegisterType < GPIOPinInput > ("GPIOPinInput.reachtech", 1, 0, "GPIOPinInput");
+    qmlRegisterType < GPIOPinOutput > ("GPIOPinOutput.reachtech", 1, 0, "GPIOPinOutput");
     qmlRegisterType < Backlight > ("backlight.reachtech", 1, 0, "Backlight");
     qmlRegisterType < System > ("system.reachtech", 1, 0, "System");
 
@@ -117,20 +100,17 @@ int main(int argc, char *argv[])
     bool success = QObject::connect(theWindow, SIGNAL(submitTextField(QString)), &serialController, SLOT(send(QString)));
     Q_ASSERT(success);
 
-    success = QObject::connect(theWindow, SIGNAL(toggle(int) ), &gpioController, SLOT(toggle(int)));
-    Q_ASSERT(success);
-
-    success = QObject::connect(theWindow, SIGNAL(read(int) ), &gpioController, SLOT(getPin(int)));
-    Q_ASSERT(success);
+//    success = QObject::connect(GPIOPinInput, SIGNAL(stateChanged(int)), &serialController, SLOT(send(int)));
+//    Q_ASSERT(success);
 
     success = QObject::connect(&mySystem, SIGNAL(setSoundFile( const QString )), &beeper, SLOT(setSoundFile( const QString )) );
     Q_ASSERT(success);
 
-    success = QObject::connect(&mySystem, SIGNAL(beep(void)), &beeper, SLOT(beep(void)) );
+    success = QObject::connect(&mySystem, SIGNAL(doBeep(void)), &beeper, SLOT(beep(void)) );
     Q_ASSERT(success);
 
     qDebug() << "[Main] start Beep";
-    mySystem.doTheBeep("/data/share/audio/lab.wav");
+    mySystem.doTheBeep("/data/share/audio/beep.wav");
     qDebug() << "[Main] end Beep";
 
     return app.exec();

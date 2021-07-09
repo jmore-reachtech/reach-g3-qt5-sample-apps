@@ -22,6 +22,7 @@
 #define BEEPER_H
 
 #include <QObject>
+#include <qqml.h>
 
 #include <alsa/asoundlib.h>
 #include <alsa/control.h>
@@ -30,6 +31,7 @@ class Beeper : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString soundFile READ soundFile WRITE setSoundFile NOTIFY soundFileChanged)
+    QML_ELEMENT
 
 public:
     explicit Beeper(QObject *parent = nullptr);
