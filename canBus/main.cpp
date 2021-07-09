@@ -1,23 +1,3 @@
-// Copyright 2020 Reach Technology
-
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlPropertyMap>
@@ -32,14 +12,12 @@
 #include <QScreen>
 #include <QThread>
 
-
 #include "signal.h"
 #include "common.h"
 #include "serialcontroller.h"
 #include "translator.h"
 #include "network.h"
 #include "beeper.h"
-#include "gpioController.h"
 #include "backlight.h"
 #include "system.h"
 #include "myGlobal.h"
@@ -49,6 +27,7 @@
 StyleValues  MyStyle;
 GlobalValues MyGlobal;
 System mySystem;
+
 int scale;
 
 int main(int argc, char *argv[])
@@ -64,28 +43,26 @@ int main(int argc, char *argv[])
 
     Beeper beeper;
     Network network;
-    Backlight backlight;
+    SerialController serialController;
+    CanBus canBus;
 
-    /* Need to register before the MainviewController is instantiated */
     qmlRegisterType < Network > ("net.reachtech", 1, 0, "Network");
     qmlRegisterType < Beeper > ("sound.reachtech", 1, 0, "Beeper");
-    qmlRegisterType < GpioController > ("gpio.reachtech", 1, 0, "GpioController");
-    qmlRegisterType < Backlight > ("backlight.reachtech", 1, 0, "Backlight");
     qmlRegisterType < System > ("system.reachtech", 1, 0, "System");
+    qmlRegisterType < CanBus > ("canbus.reachtech", 1, 0, "CanBus");
+
 
     QScreen *screen = QGuiApplication::primaryScreen();
     QRect  screenGeometry = screen->geometry();
     MyGlobal.insert("screenWidth", screenGeometry.width());
 
     scale = screenGeometry.height();
-
-    qDebug() << "Scale =" << scale;
-
     MyGlobal.insert("screenHeight", scale);
     MyGlobal.insert("screenFactor", scale);
 
-    SerialController serialController;
-    CanBus canBus;
+    qDebug() << "Scale =" << scale << " Width:" << screenGeometry.width() ;
+
+
     beeper.setVolume(90);
 
     engine.load("qrc:/main.qml");
@@ -104,18 +81,14 @@ int main(int argc, char *argv[])
     beeper.moveToThread(thread);
     thread->start();
 
-    bool success = QObject::connect(window, SIGNAL(submitTextField(QString)), & serialController, SLOT(send(QString)));
-    Q_ASSERT(success);
-
-    success = QObject::connect(&mySystem, SIGNAL(setSoundFile( const QString )), &beeper, SLOT(setSoundFile( const QString )) );
-    Q_ASSERT(success);
-
-    success = QObject::connect(&mySystem, SIGNAL(beep(void)), &beeper, SLOT(beep(void)) );
-    Q_ASSERT(success);
-
     qDebug() << "[Main] start Beep";
-    mySystem.doTheBeep("/data/share/audio/lab.wav");
+    beeper.setVolume(90);
+    beeper.setSoundFile("/data/share/audio/beep.wav");
+    beeper.beep();  //play the sound
     qDebug() << "[Main] end Beep";
+
+    bool success = QObject::connect(window, SIGNAL(submitTextField(QString)), &serialController, SLOT(send(QString)));
+    Q_ASSERT(success);
 
     return app.exec();
 }

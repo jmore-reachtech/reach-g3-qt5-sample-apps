@@ -1,33 +1,16 @@
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-
 #include "myStyle.h"
 #include "myGlobal.h"
 #include <QDebug>
 
 extern GlobalValues MyGlobal;
-extern int scale;
+//extern int scale;
+#define SCALE 800
 
 StyleValues::StyleValues(QObject * parent): QQmlPropertyMap(this, parent) {
   setObjectName("style");
-  insert("statusBarHeight", QVariant::fromValue(scale/20));
-  insert("columnSpacing", QVariant::fromValue(scale/8)); //102
-  insert("rowSpacing", QVariant::fromValue(scale/20 ));// 40));
+  insert("statusBarHeight", QVariant::fromValue(SCALE/20));
+  insert("columnSpacing", QVariant::fromValue(SCALE/8)); //102
+  insert("rowSpacing", QVariant::fromValue(SCALE/20 ));// 40));
 
   insert("themeDark", true);
   insert("backColor", QVariant::fromValue(QString("black")));
@@ -85,16 +68,25 @@ StyleValues::StyleValues(QObject * parent): QQmlPropertyMap(this, parent) {
   insert("drawerFontSize", QVariant::fromValue(22));
   insert("drawerLeftMargin", QVariant::fromValue(15));
 
-  insert("dialWidth", 300); //(scale>300) ? scale/2 : 100);  //QVariant::fromValue(225));
-  insert("dialHeight", 500); //(scale>300) ? scale/2 : 150); // 150); //scale/2); //QVariant::fromValue(300));
-  insert("dialBarWidth", (scale>300) ? 15 : 9); //10); //scale/24)); //15
+  if(SCALE > 300) {
+      insert("dialWidth", 225);
+      insert("dialHeight", 300);
+      insert("dialBarWidth", 15);
+      insert("componentX", 133);
+      insert("componentY", 160);
+      insert("iconSize", 100);
+      insert("textY", 90);
+  } else {
+      insert("dialWidth", 100);
+      insert("dialHeight", 150);
+      insert("dialBarWidth", 9);
+      insert("componentX", 60);
+      insert("componentY", 70);
+      insert("iconSize", 50);
+      insert("textY", 45);
+  }
+
   insert("dialTicksOn", QVariant::fromValue(true));
-
-  insert("componentX", (scale>300) ? 133 : 60); //100); // (scale>300) ? 133 : 100); //QVariant::fromValue(scale/6)); //133
-  insert("componentY", (scale>300) ? 160 : 70); //60); //QVariant::fromValue(scale/5)); //160));
-  insert("iconSize", (scale>300) ? 100 : 50); //50); //QVariant::fromValue(scale/2)); //100));
-
-  insert("textY", (scale>300) ? 90 : 45); //QVariant::fromValue(scale/2)); //90));
   insert("imgX", QVariant::fromValue(QString("Images/X_100.png")));
 
   insert("metricBool", QVariant::fromValue(false));
