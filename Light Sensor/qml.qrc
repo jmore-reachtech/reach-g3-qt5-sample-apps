@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Fonts/SourceSansPro-Black.otf</file>
+        <file>Fonts/SourceSansPro-BlackIt.otf</file>
+        <file>Fonts/SourceSansPro-Bold.otf</file>
+        <file>Fonts/SourceSansPro-BoldIt.otf</file>
+        <file>Fonts/SourceSansPro-ExtraLight.otf</file>
+        <file>Fonts/SourceSansPro-ExtraLightIt.otf</file>
+        <file>Fonts/SourceSansPro-It.otf</file>
+        <file>Fonts/SourceSansPro-Light.otf</file>
+        <file>Fonts/SourceSansPro-LightIt.otf</file>
+        <file>Fonts/SourceSansPro-Regular.otf</file>
+        <file>Fonts/SourceSansPro-Semibold.otf</file>
+        <file>Fonts/SourceSansPro-SemiboldIt.otf</file>
+        <file>main.cpp</file>
+        <file>Images/reach_logo_color_30.png</file>
+    </qresource>
+</RCC>
